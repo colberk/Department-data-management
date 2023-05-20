@@ -3,7 +3,9 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 import tkinter.messagebox as mb
-from tkcalendar import Calendar
+import mysql.connector as mc
+from tkcalendar import DateEntry
+import datetime
 
 
 class exam:
@@ -26,72 +28,90 @@ class exam:
         self.master.title('Exam Management')
         self.master.geometry("1200x600+50+50")
     
-        #######     LEFT FRAME     #######
+        ######################     LEFT FRAME     #######################
         self.frameleft = Frame(self.master, width=400)
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ####################   LABELS    ######################
-        self.GLabel = Label(self.frameleft, text='Group:', fg='#4F4F4F', font=('tahoma', 9))
-        self.GLabel.place(x=15, y=20, width=120, height=40)
+        self.GroupLabel = Label(self.frameleft, text='Group:', fg='#4F4F4F', font=('tahoma', 9))
+        self.GroupLabel.place(x=15, y=20, width=120, height=40)
         
-        self.ClassRoomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ClassRoomLabel.place(x=10, y=70, width=120, height=40)
+        self.ClassroomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ClassroomLabel.place(x=10, y=70, width=120, height=40)
+
+        self.ModuleLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ModuleLabel.place(x=10, y=120, width=120, height=40)
         
-        self.ProfLabel = Label(self.frameleft, text='Professor:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ProfLabel.place(x=10, y=120, width=120, height=40)
+        self.ProfLabel = Label(self.frameleft, text='Teacher:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ProfLabel.place(x=10, y=170, width=120, height=40)
         
-        self.dateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.dateLabel.place(x=15, y=170, width=120, height=40)
+        self.DateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F', font=('tahoma', 9))
+        self.DateLabel.place(x=15, y=220, width=120, height=40)
         
         self.TimeLabel = Label(self.frameleft, text='Time:', fg='#4F4F4F', font=('tahoma', 9))
-        self.TimeLabel.place(x=15, y=220, width=120, height=40)
+        self.TimeLabel.place(x=15, y=270, width=120, height=40)
 
-        self.gr = StringVar()
+        self.group = StringVar()
         self.classroom = StringVar()
-        self.professor = StringVar()
-        self.exam = StringVar()
-        self.time=StringVar()
+        self.module = StringVar()
+        self.prof = StringVar()
+        self.date = StringVar()
+        self.time = StringVar()
+
+
 
         ####################   ENTRIES    ######################
-        self.GEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.gr)
-        self.GEntry.place(x=170, y=20, width=200, height=40)
+        self.GroupEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.group)
+        self.GroupEntry.place(x=170, y=20, width=200, height=40)
         
-        self.ClassRoomEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.classroom)
-        self.ClassRoomEntry.place(x=170, y=70, width=200, height=40)
+        self.ClassroomEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.classroom)
+        self.ClassroomEntry.place(x=170, y=70, width=200, height=40)
+
+        self.ModuleEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.module)
+        self.ModuleEntry.place(x=170, y=120, width=200, height=40)
         
-        self.ProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.professor)
-        self.ProfEntry.place(x=170, y=120, width=200, height=40)
+        self.ProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.prof)
+        self.ProfEntry.place(x=170, y=170, width=200, height=40)
         
-        self.DateExam = Calendar(self.frameleft, year=2021, textvariable=self.exam,
-                                     mindate=datetime.date.today())
-        self.DateExam.place(x=170, y=170, width=200, height=200)
+        self.DateEntry = DateEntry(self.frameleft ,textvariable=self.date, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
+        self.DateEntry.place(x=170, y=220,width=200,height=40)
         
-        self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","14:00","15:00","16:00","17:00"],
-                                     state='readonly', textvariable=self.time)
-        self.TimeEntry.place(x=170, y=220, width=200)
+        self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],
+                                      state='readonly', textvariable=self.time)
+        self.TimeEntry.place(x=170, y=270, width=200,height=30)
+
 
 
         ####################   BUTTONS    ######################
-        self.buttonAdd = Button(self.frameleft, text="ADD",  font=('tahoma', 10))
-        self.buttonAdd.place(x=20, y=700, width=60, height=60)
-        self.buttonUpdate = Button(self.frameleft,  text="UPDATE", font=('tahoma', 10))
-        self.buttonUpdate.place(x=100, y=700, width=60, height=60)
-        self.buttonDelete = Button(self.frameleft, text="DELETE", font=('tahoma', 10))
-        self.buttonDelete.place(x=180, y=700, width=60, height=60)
-        self.buttonRead = Button(self.frameleft, text="SHOW", font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=700, width=60, height=60)
-        self.buttonReset = Button(self.frameleft, text="RESET", font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=700, width=60, height=60)
+        self.buttonAdd = Button(self.frameleft, text="ADD",command=self.add,  font=('tahoma', 10))
+        self.buttonAdd.place(x=20, y=450, width=60, height=60)
+        
+        self.buttonUpdate = Button(self.frameleft,  text="UPDATE",command=self.update, font=('tahoma', 10))
+        self.buttonUpdate.place(x=100, y=450, width=60, height=60)
+        
+        self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete, font=('tahoma', 10))
+        self.buttonDelete.place(x=180, y=450, width=60, height=60)
+        
+        self.buttonRead = Button(self.frameleft, text="SHOW",command=self.read, font=('tahoma', 10))
+        self.buttonRead.place(x=260, y=450, width=60, height=60)
+        
+        self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
+        self.buttonReset.place(x=340, y=450, width=60, height=60)
 
-        ############################# right frame start here ######################"""
+
+
+
+        ############################# RIGHT FRAME #############################
         self.frameright = Frame(self.master, width=800)
         self.frameright.pack(side=LEFT, fill=Y)
-        ############################# right frame end here ######################"""
+
 
         self.framerighttop = Frame(self.frameright, height=50, pady=5, padx=5)
 
-        self.searchstudent = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'), width=110)
-        self.searchstudent.grid(row=0, column=0, sticky='nsew', pady=10, padx=10)
+        self.searchexam = StringVar()
+
+        self.SearchExam = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'), width=110)
+        self.SearchExam.grid(row=0, column=0, sticky='nsew', pady=10, padx=10)
         self.buttonsearch = Button(self.framerighttop, text='Search', fg='#4F4F4F',
                                    font=('tahoma', 12, 'bold'), width=50)
         self.buttonsearch.grid(row=0, column=1, sticky='nsew', pady=10, padx=10)
@@ -101,14 +121,14 @@ class exam:
 
         self.framerighttop.pack(fill=X)
 
-        ################################# Frame Tree View ######################################"
+        ################## FRAME TREE VIEW ##################
 
         self.frameView = Frame(self.frameright, bg='blue')
         self.frameView.pack(fill=Y)
         self.scrollbar = Scrollbar(self.frameView, orient=VERTICAL)
         self.table = ttk.Treeview(self.frameView,
-                                  columns=("ID","GroupeName","ClassRoom","Professor","Date Exam","Time"),
-                                  show='headings', yscrollcommand=self.scrollbar.set,height=300)
+                                  columns=("ID","GroupeName","ClassRoom","Module","Professor","Date","Time"),
+                                  show='headings', yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=RIGHT, fill=Y)
         self.scrollbar.config(command=self.table.yview)
         self.table.pack(fill=BOTH)
@@ -116,20 +136,22 @@ class exam:
         self.table.heading("ID", text="ID")
         self.table.heading("GroupeName", text="GroupeName")
         self.table.heading("ClassRoom", text="ClassRoom")
+        self.table.heading("Module", text="Module")
         self.table.heading("Professor", text="Professor")
-        self.table.heading("Date Exam", text="Date Exam")
+        self.table.heading("Date", text="Date")
         self.table.heading("Time", text="Time")
 
         self.table.column("ID", anchor=W, width=7)
         self.table.column("GroupeName", anchor=W,width=100)
         self.table.column("ClassRoom", anchor=W,width=100)
+        self.table.column("Module", anchor=W,width=100)
         self.table.column("Professor", anchor=W,width=100)
-        self.table.column("Date Exam", anchor=W,width=100)
+        self.table.column("Date", anchor=W,width=100)
         self.table.column("Time", anchor=W)
         self.read()
         self.table.bind("<ButtonRelease-1>", self.show)
 
-    """def add(self):
+    def add(self):
         mydb = mc.connect(
             host='localhost',
             user='root',
@@ -137,14 +159,11 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = "insert into Exam(GroupName,ClassRoom,Professor,DateExam,Time) values (%s,%s,%s,%s,%s)"
-        if (len(self.GroupName.get()) == 0 or len(self.classRoom.get()) == 0 or len(
-                self.Professor.get()) == 0 or len(self.DateExam.get_date()) == 0 or len(
-                self.timeExam.get()) == 0):
-            mb.showerror('Error', 'all data should be required')
+        sql = "insert into exam(group,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
+        if (len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
+            mb.showerror('Error', 'all data should be required',parent = self.master)
         else:
-            val = (self.GroupName.get(), self.classRoom.get(), self.Professor.get(), self.DateExam.get_date(),
-                   self.timeExam.get())
+            val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get() or len (self.time.get())==0)
             mycursor.execute(sql, val)
             mydb.commit()
             mydb.close()
@@ -167,26 +186,28 @@ class exam:
         for res in myresults:
             self.table.insert('', 'end', iid=res[0], values=res)
             mydb.commit()
-        mydb.close()"""
+        mydb.close()
 
     def show(self, ev):
         self.iid = self.table.focus()
         alldata = self.table.item(self.iid)
         val = alldata['values']
         self.group.set(val[1])
-        self.classe.set(val[2])
-        self.professor.set(val[3])
-        self.dexam.set(val[4])
-        self.timeExam.set(val[5])
+        self.classroom.set(val[2])
+        self.module.set(val[3])
+        self.prof.set(val[4])
+        self.date.set(val[5])
+        self.time.set(val[6])
 
     def reset(self):
-        self.GroupName.delete(0, 'end')
-        self.classRoom.delete(0, 'end')
-        self.Professor.delete(0, 'end')
-        self.DateExam.selection_clear()
-        self.TimeEntry.current(0)
+        self.GroupEntry.delete(0, 'end')
+        self.ClassroomEntry.delete(0, 'end')
+        self.ProfEntry.delete(0, 'end')
+        self.ModuleEntry.delete(0, 'end')
+        self.DeliveryDateEntry.selection_clear()
+        self.TimeEntry.set("")
 
-    """def delete(self):
+    def delete(self):
         mydb = mc.connect(
             host='localhost',
             user='root',
@@ -194,7 +215,7 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = ("delete from Exam where id=" + self.iid)
+        sql = ("delete from exam where id=" + self.iid)
         mycursor.execute(sql)
         mydb.commit()
         mb.showinfo('Delete', 'this student deleted', parent=self.master)
@@ -209,9 +230,9 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = ("update Exam set GroupName=%s,ClassRoom=%s,Professor=%s,DateExam=%s,Time=%s where id=%s")
+        sql = ("update exam set group=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
         val = (
-        self.group.get(), self.classe.get(), self.professor.get(), self.DateExam.get_date(), self.timeExam.get(),
+        self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get_date(), self.time.get(),
         self.iid)
         mycursor.execute(sql, val)
         mydb.commit()
@@ -227,12 +248,12 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        print(self.searchstudent.get())
-        sql = ("select * from Exam where id=" + self.searchstudent.get())
+        print(self.searchexam.get())
+        sql = ("select * from exam where id=" + self.searchexam.get())
         mycursor.execute(sql)
         myresults = mycursor.fetchone()
         self.table.delete(*self.table.get_children())
         # print(myresults)
         self.table.insert('', 'end', iid=myresults[0], values=myresults)
         mydb.commit()
-        mydb.close()"""
+        mydb.close()

@@ -4,7 +4,7 @@ from PIL import Image,ImageTk
 import datetime
 import tkinter.messagebox as mb
 import mysql.connector as mc
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import DateEntry
 import datetime
 
 
