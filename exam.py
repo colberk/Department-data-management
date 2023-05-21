@@ -39,7 +39,7 @@ class exam:
         self.ClassroomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
         self.ClassroomLabel.place(x=10, y=70, width=120, height=40)
 
-        self.ModuleLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ModuleLabel = Label(self.frameleft, text='Module:', fg='#4F4F4F', font=('tahoma', 9))
         self.ModuleLabel.place(x=10, y=120, width=120, height=40)
         
         self.ProfLabel = Label(self.frameleft, text='Teacher:', fg='#4F4F4F', font=('tahoma', 9))
@@ -159,12 +159,12 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = "insert into exam(group,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
+        sql = "insert into exam(groupex,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
         if (len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
             mb.showerror('Error', 'all data should be required',parent = self.master)
         else:
-            val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get() or len (self.time.get())==0)
-            mycursor.execute(sql, val)
+            val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get(),self.time.get())
+            mycursor.execute(sql,val)
             mydb.commit()
             mydb.close()
             mb.showinfo('Successfully added', 'Data inserted Successfully', parent=self.master)
@@ -215,10 +215,10 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = ("delete from exam where id=" + self.iid)
+        sql = ("delete from exam where id="+ self.iid)
         mycursor.execute(sql)
         mydb.commit()
-        mb.showinfo('Delete', 'this student deleted', parent=self.master)
+        mb.showinfo('Delete', 'Data deleted successfully', parent=self.master)
         self.read()
         self.reset()
 
@@ -230,13 +230,11 @@ class exam:
             database='university'
         )
         mycursor = mydb.cursor()
-        sql = ("update exam set group=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
-        val = (
-        self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get_date(), self.time.get(),
-        self.iid)
+        sql = ("update exam set groupex=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
+        val = (self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get(), self.time.get(),self.iid)
         mycursor.execute(sql, val)
         mydb.commit()
-        mb.showinfo('update', 'this student is updated', parent=self.master)
+        mb.showinfo('update', 'Data updated successfully', parent=self.master)
         self.read()
         self.reset()
 
