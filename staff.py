@@ -24,6 +24,7 @@ class staff:
         self.master = Toplevel()
         self.master.title('Staff Management')
         self.master.geometry("1200x600+50+50")
+        self.master.iconbitmap('mortarboard.ico')
 
 
         ############################   TOP FRAME   ############################

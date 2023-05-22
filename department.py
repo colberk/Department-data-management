@@ -24,6 +24,7 @@ class Department:
         self.master = Toplevel()
         self.master.title('Specialties And Groups')
         self.master.geometry("1200x500+50+50")
+        self.master.iconbitmap('mortarboard.ico')
 
         #######   TOP FRAME   #######
         self.topframe=Frame(self.master,bg='#105356',height=10)

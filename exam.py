@@ -27,6 +27,7 @@ class exam:
         self.master = Toplevel()
         self.master.title('Exam Management')
         self.master.geometry("1200x500+50+50")
+        self.master.iconbitmap('mortarboard.ico')
 
 
         ############################   TOP FRAME   ############################

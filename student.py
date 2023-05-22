@@ -22,6 +22,7 @@ class student:
         self.master = Toplevel()
         self.master.title('Student Management System')
         self.master.geometry("1200x650+50+50")
+        self.master.iconbitmap('mortarboard.ico')
 
         #######   TOP FRAME   #######
         self.topframe=Frame(self.master,bg='#105356',height=10)
