@@ -21,7 +21,13 @@ class student:
     def openstudentwindow(self):
         self.master = Toplevel()
         self.master.title('Student Management System')
-        self.master.geometry("1200x600+50+50")
+        self.master.geometry("1200x650+50+50")
+
+        #######   TOP FRAME   #######
+        self.topframe=Frame(self.master,bg='#105356',height=10)
+        self.topframe.pack(fill=X)
+        self.sms=Label(self.topframe,text='STUDENT DATA MANAGEMENT',bg='#105356',fg='white',font=('tahoma',12,'bold'),pady=5)
+        self.sms.pack()
         
 
 

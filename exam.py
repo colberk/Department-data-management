@@ -20,13 +20,20 @@ class exam:
         self.imgstaff=Label(self.examFrame,image=self.new_img4,padx=10,pady=10)
         self.imgstaff.pack()
         
-        self.buttomex=Button(self.examFrame,command=self.openExamWindow,font=('tahoma',10,'bold'),text='Exam Mnagement',bg='#1a8488',fg='white',padx=10,pady=10)
+        self.buttomex=Button(self.examFrame,command=self.openExamWindow,font=('tahoma',10,'bold'),text='Exam Management',bg='#1a8488',fg='white',padx=10,pady=10)
         self.buttomex.pack()
 
     def openExamWindow(self):
         self.master = Toplevel()
         self.master.title('Exam Management')
-        self.master.geometry("1200x600+50+50")
+        self.master.geometry("1200x500+50+50")
+
+
+        ############################   TOP FRAME   ############################
+        self.topframe=Frame(self.master,bg='#105356',height=10)
+        self.topframe.pack(fill=X)
+        self.sms=Label(self.topframe,text='EXAM DATA MANAGEMENT',bg='#105356',fg='white',font=('tahoma',12,'bold'),pady=5)
+        self.sms.pack()
     
         ######################     LEFT FRAME     #######################
         self.frameleft = Frame(self.master, width=400)
@@ -34,22 +41,22 @@ class exam:
 
         ####################   LABELS    ######################
         self.GroupLabel = Label(self.frameleft, text='Group:', fg='#4F4F4F', font=('tahoma', 9))
-        self.GroupLabel.place(x=15, y=20, width=120, height=40)
+        self.GroupLabel.place(x=15, y=30, width=120, height=40)
         
         self.ClassroomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ClassroomLabel.place(x=10, y=70, width=120, height=40)
+        self.ClassroomLabel.place(x=10, y=80, width=120, height=40)
 
         self.ModuleLabel = Label(self.frameleft, text='Module:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ModuleLabel.place(x=10, y=120, width=120, height=40)
+        self.ModuleLabel.place(x=10, y=130, width=120, height=40)
         
         self.ProfLabel = Label(self.frameleft, text='Teacher:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ProfLabel.place(x=10, y=170, width=120, height=40)
+        self.ProfLabel.place(x=10, y=180, width=120, height=40)
         
         self.DateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.DateLabel.place(x=15, y=220, width=120, height=40)
+        self.DateLabel.place(x=15, y=230, width=120, height=40)
         
         self.TimeLabel = Label(self.frameleft, text='Time:', fg='#4F4F4F', font=('tahoma', 9))
-        self.TimeLabel.place(x=15, y=270, width=120, height=40)
+        self.TimeLabel.place(x=15, y=280, width=120, height=40)
 
         self.group = StringVar()
         self.classroom = StringVar()
@@ -62,41 +69,41 @@ class exam:
 
         ####################   ENTRIES    ######################
         self.GroupEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.group)
-        self.GroupEntry.place(x=170, y=20, width=200, height=40)
+        self.GroupEntry.place(x=170, y=30, width=200, height=40)
         
         self.ClassroomEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.classroom)
-        self.ClassroomEntry.place(x=170, y=70, width=200, height=40)
+        self.ClassroomEntry.place(x=170, y=80, width=200, height=40)
 
         self.ModuleEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.module)
-        self.ModuleEntry.place(x=170, y=120, width=200, height=40)
+        self.ModuleEntry.place(x=170, y=130, width=200, height=40)
         
         self.ProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.prof)
-        self.ProfEntry.place(x=170, y=170, width=200, height=40)
+        self.ProfEntry.place(x=170, y=180, width=200, height=40)
         
         self.DateEntry = DateEntry(self.frameleft ,textvariable=self.date, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
-        self.DateEntry.place(x=170, y=220,width=200,height=40)
+        self.DateEntry.place(x=170, y=230,width=200,height=40)
         
         self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],
                                       state='readonly', textvariable=self.time)
-        self.TimeEntry.place(x=170, y=270, width=200,height=30)
+        self.TimeEntry.place(x=170, y=280, width=200,height=30)
 
 
 
         ####################   BUTTONS    ######################
         self.buttonAdd = Button(self.frameleft, text="ADD",command=self.add,  font=('tahoma', 10))
-        self.buttonAdd.place(x=20, y=450, width=60, height=60)
+        self.buttonAdd.place(x=20, y=350, width=60, height=60)
         
         self.buttonUpdate = Button(self.frameleft,  text="UPDATE",command=self.update, font=('tahoma', 10))
-        self.buttonUpdate.place(x=100, y=450, width=60, height=60)
+        self.buttonUpdate.place(x=100, y=350, width=60, height=60)
         
         self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete, font=('tahoma', 10))
-        self.buttonDelete.place(x=180, y=450, width=60, height=60)
+        self.buttonDelete.place(x=180, y=350, width=60, height=60)
         
         self.buttonRead = Button(self.frameleft, text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=450, width=60, height=60)
+        self.buttonRead.place(x=260, y=350, width=60, height=60)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=450, width=60, height=60)
+        self.buttonReset.place(x=340, y=350, width=60, height=60)
 
 
 
@@ -161,7 +168,7 @@ class exam:
         mycursor = mydb.cursor()
         sql = "insert into exam(groupex,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
         if (len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
-            mb.showerror('Error', 'all data should be required',parent = self.master)
+            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
         else:
             val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get(),self.time.get())
             mycursor.execute(sql,val)

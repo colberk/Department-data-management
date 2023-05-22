@@ -28,29 +28,36 @@ class library:
         self.master = Toplevel()
         self.master.title('Library Management')
         self.master.geometry("1200x600+50+50")
+
+
+        ############################   TOP FRAME   ############################
+        self.topframe=Frame(self.master,bg='#105356',height=10)
+        self.topframe.pack(fill=X)
+        self.sms=Label(self.topframe,text='lIBRARY MANAGEMENT',bg='#105356',fg='white',font=('tahoma',12,'bold'),pady=5)
+        self.sms.pack()
         
         ##############################     LEFT FRAME   ##############################
         self.frameleft = Frame(self.master, width=400)
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ###################   LABELS   #####################
-        self.RegistrationN=Label(self.frameleft,text='Student\'s Registration N°:',fg='#4F4F4F',font=('tahoma',9))
-        self.RegistrationN.place(x=15,y=20,width=120,height=40)
+        self.RegistrationN=Label(self.frameleft,text='Registration N°:',fg='#4F4F4F',font=('tahoma',9))
+        self.RegistrationN.place(x=15,y=30,width=120,height=40)
         
         self.PhoneNumber = Label(self.frameleft, text='Phone Number:', fg='#4F4F4F', font=('tahoma', 9))
-        self.PhoneNumber.place(x=10, y=70, width=120, height=40)
+        self.PhoneNumber.place(x=10, y=80, width=120, height=40)
         
         self.BookID = Label(self.frameleft, text='Book Name:', fg='#4F4F4F', font=('tahoma', 9))
-        self.BookID.place(x=10, y=120, width=120, height=40)
+        self.BookID.place(x=10, y=130, width=120, height=40)
 
         self.BookName = Label(self.frameleft, text='Book ID:', fg='#4F4F4F', font=('tahoma', 9))
-        self.BookName.place(x=10, y=170, width=120, height=40)
+        self.BookName.place(x=10, y=180, width=120, height=40)
         
         self.DeliveryDate = Label(self.frameleft, text='Delivery Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.DeliveryDate.place(x=15, y=250, width=120, height=40)
+        self.DeliveryDate.place(x=15, y=260, width=120, height=40)
         
         self.ReturnDate = Label(self.frameleft, text='Return Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ReturnDate.place(x=15, y=300, width=120, height=40)
+        self.ReturnDate.place(x=15, y=310, width=120, height=40)
         
         self.registrationN=StringVar()
         self.phonenumber = StringVar()
@@ -61,22 +68,22 @@ class library:
 
         ###################   ENTRIES   #####################
         self.RegistrationNEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',9),textvariable=self.registrationN)
-        self.RegistrationNEntry.place(x=170,y=20,width=200,height=40)
+        self.RegistrationNEntry.place(x=170,y=30,width=200,height=40)
         
         self.PhoneNumberEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.phonenumber)
-        self.PhoneNumberEntry.place(x=170, y=70, width=200, height=40)
+        self.PhoneNumberEntry.place(x=170, y=80, width=200, height=40)
         
         self.BookNameEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.bookname)
-        self.BookNameEntry.place(x=170, y=120, width=200, height=40)
+        self.BookNameEntry.place(x=170, y=130, width=200, height=40)
 
         self.BookIDEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.bookid)
-        self.BookIDEntry.place(x=170, y=170, width=200, height=40)
+        self.BookIDEntry.place(x=170, y=180, width=200, height=40)
         
         self.DeliveryDateEntry=DateEntry(self.frameleft ,textvariable=self.deliverydate, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
-        self.DeliveryDateEntry.place(x=170, y=250,width=200,height=40)
+        self.DeliveryDateEntry.place(x=170, y=260,width=200,height=40)
         
         self.ReturnDateEntry = DateEntry(self.frameleft ,textvariable=self.returndate, date_pattern="yyyy-mm-dd")
-        self.ReturnDateEntry.place(x=170, y=300, width=200, height=40)
+        self.ReturnDateEntry.place(x=170, y=310, width=200, height=40)
 
 
         ###################   BUTTONS   #####################
@@ -165,7 +172,7 @@ class library:
         mycursor=mydb.cursor()
         sql="insert into library(registrationnumber,phonenumber,bookname,bookid,deliverydate,returndate) values (%s,%s,%s,%s,%s,%s)"
         if (len(self.registrationN.get())==0 or len(self.phonenumber.get())==0 or len(self.bookname.get())==0 or len(self.bookid.get())==0 or len(self.deliverydate.get())==0 or  len(self.returndate.get())==0 ) :
-            mb.showerror('Error', 'all data should be required',parent=self.master)
+            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
         else:
             val=(self.registrationN.get(),self.phonenumber.get(),self.bookname.get(),self.bookid.get(),self.deliverydate.get(),self.returndate.get())
             mycursor.execute(sql,val)
@@ -202,7 +209,7 @@ class library:
         self.registrationN.set(val[1])
         self.phonenumber.set(val[2])
         self.bookname.set(val[3])
-        self.bookid.set(val[3])
+        self.bookid.set(val[4])
         self.deliverydate.set(val[5])
         self.returndate.set(val[6])
 

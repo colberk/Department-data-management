@@ -17,7 +17,7 @@ class staff:
         self.imgstaff=Label(self.staffFrame,image=self.new_img3,padx=10,pady=10)
         self.imgstaff.pack()
         
-        self.buttomstf=Button(self.staffFrame,command=self.openStaffWindow,font=('tahoma',10,'bold'),text='Staff Mnagement',bg='#1a8488',fg='white',padx=10,pady=10)
+        self.buttomstf=Button(self.staffFrame,command=self.openStaffWindow,font=('tahoma',10,'bold'),text='Staff Management',bg='#1a8488',fg='white',padx=10,pady=10)
         self.buttomstf.pack()
 
     def openStaffWindow(self):
@@ -25,31 +25,38 @@ class staff:
         self.master.title('Staff Management')
         self.master.geometry("1200x600+50+50")
 
+
+        ############################   TOP FRAME   ############################
+        self.topframe=Frame(self.master,bg='#105356',height=10)
+        self.topframe.pack(fill=X)
+        self.sms=Label(self.topframe,text='STAFF DATA MANAGEMENT',bg='#105356',fg='white',font=('tahoma',12,'bold'),pady=5)
+        self.sms.pack()
+
         #############################   LEFT FRAME   #############################
         self.frameleft = Frame(self.master, width=400)
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ###################    LABELS   #######################
         self.FirstName=Label(self.frameleft,text='Firstname:',fg='#4F4F4F',font=('tahoma',9))
-        self.FirstName.place(x=10,y=20,width=100,height=40)
+        self.FirstName.place(x=10,y=30,width=100,height=40)
         
         self.LastName = Label(self.frameleft, text='Lastname:',fg='#4F4F4F',font=('tahoma',9))
-        self.LastName.place(x=10,y=70,width=100,height=40)
+        self.LastName.place(x=10,y=80,width=100,height=40)
         
         self.IDN = Label(self.frameleft, text='IDCard N°:',fg='#4F4F4F',font=('tahoma',9))
-        self.IDN.place(x=10,y=120,width=100,height=40)
+        self.IDN.place(x=10,y=130,width=100,height=40)
         
         self.Email = Label(self.frameleft, text='Email:',fg='#4F4F4F',font=('tahoma',9))
-        self.Email.place(x=10,y=170,width=100,height=40)
+        self.Email.place(x=10,y=180,width=100,height=40)
         
         self.PhoneNumber = Label(self.frameleft, text='Phone:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.PhoneNumber.place(x=10, y=220, width=100, height=40)
+        self.PhoneNumber.place(x=10, y=230, width=100, height=40)
         
         self.MainJob= Label(self.frameleft, text='Main Job:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.MainJob.place(x=10, y=290, width=100, height=40)
+        self.MainJob.place(x=10, y=280, width=100, height=40)
         
         self.SecJob= Label(self.frameleft, text='Secondary Job:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.SecJob.place(x=10, y=340, width=100, height=40)
+        self.SecJob.place(x=10, y=330, width=100, height=40)
 
         self.firstname=StringVar()
         self.lastname = StringVar()
@@ -62,25 +69,25 @@ class staff:
 
         ###################    ENTRIES   #######################
         self.FirstNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.firstname)
-        self.FirstNameEntry.place(x=120,y=20,width=200,height=40)
+        self.FirstNameEntry.place(x=120,y=30,width=200,height=40)
         
         self.LastNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.lastname)
-        self.LastNameEntry.place(x=120,y=70,width=200,height=40)
+        self.LastNameEntry.place(x=120,y=80,width=200,height=40)
         
         self.IDNentry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.idn)
-        self.IDNentry.place(x=120,y=120,width=200,height=40)
+        self.IDNentry.place(x=120,y=130,width=200,height=40)
         
         self.EmailEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.email)
-        self.EmailEntry.place(x=120,y=170,width=200,height=40)
+        self.EmailEntry.place(x=120,y=180,width=200,height=40)
         
         self.PhoneEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 12,), textvariable=self.phonenumber)
-        self.PhoneEntry.place(x=120, y=220, width=200, height=40)
+        self.PhoneEntry.place(x=120, y=230, width=200, height=40)
         
         self.MainJobEntry = ttk.Combobox(self.frameleft, values=["Professor","Professor-grade1","Professor-grade2","Employee"],state='readonly',textvariable=self.mainjob)
-        self.MainJobEntry.place(x=120, y=290, width=200, height=40)
+        self.MainJobEntry.place(x=120, y=280, width=200, height=40)
         
         self.SecJobEntry = ttk.Combobox(self.frameleft, values=["None","Job1","Job2","Job3"],state='readonly',textvariable=self.secjob)
-        self.SecJobEntry.place(x=120, y=340, width=200, height=40)
+        self.SecJobEntry.place(x=120, y=330, width=200, height=40)
 
          
 
@@ -171,7 +178,7 @@ class staff:
         mycursor=mydb.cursor()
         sql="insert into staff(firstname,lastname,IDcardnumber,email,phonenumber,job,secondaryjob) values (%s,%s,%s,%s,%s,%s,%s)"
         if (len(self.firstname.get())==0 or len(self.lastname.get())==0 or len(self.idn.get())==0  or len(self.email.get())==0 or len(self.phonenumber.get())==0 or len(self.mainjob.get())==0 or len(self.secjob.get())==0) :
-            mb.showerror('Error', 'all data should be required',parent=self.master)
+            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
         else:
             val=(self.firstname.get(),self.lastname.get(),self.idn.get(),self.email.get(),self.phonenumber.get(),self.mainjob.get(),self.secjob.get())
             mycursor.execute(sql,val)

@@ -23,7 +23,13 @@ class Department:
     def openUniversityWindow(self):
         self.master = Toplevel()
         self.master.title('Specialties And Groups')
-        self.master.geometry("1200x600+50+50")
+        self.master.geometry("1200x500+50+50")
+
+        #######   TOP FRAME   #######
+        self.topframe=Frame(self.master,bg='#105356',height=10)
+        self.topframe.pack(fill=X)
+        self.sms=Label(self.topframe,text='SPECIALITIES AND GROUPS MANAGEMENT',bg='#105356',fg='white',font=('tahoma',12,'bold'),pady=5)
+        self.sms.pack()
         
 
 
@@ -33,13 +39,13 @@ class Department:
 
         #################   LABELS #######################
         self.SpecialityName=Label(self.frameleft,text='Speciality\'s Name:',fg='#4F4F4F',font=('tahoma',9))
-        self.SpecialityName.place(x=10,y=30,width=100,height=40)
+        self.SpecialityName.place(x=10,y=80,width=100,height=40)
         
         self.Level = Label(self.frameleft, text='Level:',fg='#4F4F4F',font=('tahoma',9))
-        self.Level.place(x=10,y=80,width=100,height=40)
+        self.Level.place(x=10,y=130,width=100,height=40)
         
         self.NumberGroup = Label(self.frameleft, text='Number of groups:',fg='#4F4F4F',font=('tahoma',9))
-        self.NumberGroup.place(x=10,y=130,width=100,height=40)
+        self.NumberGroup.place(x=10,y=180,width=100,height=40)
         
         
         
@@ -52,32 +58,32 @@ class Department:
         #################   ENTRIES #######################
 
         self.SpecialityNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.specialityname)
-        self.SpecialityNameEntry.place(x=120,y=30,width=200,height=40)
+        self.SpecialityNameEntry.place(x=120,y=80,width=200,height=40)
         
         self.LevelEntry = ttk.Combobox(self.frameleft, values=["L1","L2","L3","M1","M2"],state='readonly',textvariable=self.level)
-        self.LevelEntry.place(x=120,y=80,width=200,height=40)
+        self.LevelEntry.place(x=120,y=130,width=200,height=40)
         
         self.NumberGroupsEntry = ttk.Combobox(self.frameleft,values=["1","2","3","4","5","6","7","8","9","10"],state='readonly',textvariable=self.numbergroup)
-        self.NumberGroupsEntry.place(x=120,y=130,width=200,height=40)
+        self.NumberGroupsEntry.place(x=120,y=180,width=200,height=40)
 
 
 
         #################   BUTTONS #######################
 
         self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
-        self.buttonAdd.place(x=20,y=300,width=60,height=60)
+        self.buttonAdd.place(x=20,y=350,width=60,height=60)
         
         self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
-        self.buttonUpdate.place(x=100, y=300,width=60,height=60)
+        self.buttonUpdate.place(x=100, y=350,width=60,height=60)
         
         self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
-        self.buttonDelete.place(x=180, y=300,width=60,height=60)
+        self.buttonDelete.place(x=180, y=350,width=60,height=60)
         
         self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=300, width=60, height=60)
+        self.buttonRead.place(x=260, y=350, width=60, height=60)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=300, width=60, height=60)
+        self.buttonReset.place(x=340, y=350, width=60, height=60)
 
 
         #################   RIGHT FRAME #######################
@@ -127,8 +133,8 @@ class Department:
 
         self.table.column("ID", anchor=W,width= 20)
         self.table.column("Speciality Name",anchor=W,width= 200)
-        self.table.column("Level",anchor=W,width=100)
-        self.table.column("Number Of Groups",anchor=W,width= 120)
+        self.table.column("Level",anchor=W,width=200)
+        self.table.column("Number Of Groups",anchor=W,width= 200)
 
         self.read()
         self.table.bind("<ButtonRelease>",self.show)
