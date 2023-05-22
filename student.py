@@ -182,54 +182,62 @@ class student:
     ### ADD FONTION ###
 
     def add(self):
-        mydb=mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="insert into student(firstname,lastname,registrationnumber,email,phonenumber,level,speciality,groupe) values (%s,%s,%s,%s,%s,%s,%s,%s)"
-        if (len(self.firstname.get())==0 
-            or len(self.lastname.get())==0 
-            or len(self.registration.get())==0 
-            or len(self.email.get())==0 
-            or len(self.phoneNum.get())==0 
-            or len(self.level.get())==0 
-            or len(self.speciality.get())==0 
-            or len(self.group.get())==0 ) :
-            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
+        try:
+            mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="insert into student(firstname,lastname,registrationnumber,email,phonenumber,level,speciality,groupe) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+            if (len(self.firstname.get())==0 
+                or len(self.lastname.get())==0 
+                or len(self.registration.get())==0 
+                or len(self.email.get())==0 
+                or len(self.phoneNum.get())==0 
+                or len(self.level.get())==0 
+                or len(self.speciality.get())==0 
+                or len(self.group.get())==0 ) :
+                mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
 
-        else:
-            val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get())
-            mycursor.execute(sql,val)
-            mydb.commit()
-            mydb.close()
-            self.read()
-            self.reset()
-        
-            mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
+            else:
+                val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get())
+                mycursor.execute(sql,val)
+                mydb.commit()
+                mydb.close()
+                self.read()
+                self.reset()
+            
+                mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
             
 
 
 
     ### READ FONTION ###
     def read(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="select * from student"
-        mycursor.execute(sql)
-        myresults=mycursor.fetchall()
-        self.table.delete(*self.table.get_children())
-        for res in myresults:
-            self.table.insert('','end',iid=res[2],values=res)
-            mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="select * from student"
+            mycursor.execute(sql)
+            myresults=mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     ### SHOW FONTION ###
@@ -266,58 +274,70 @@ class student:
 
     ### DELETE FONTION ###
     def delete(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("delete from student where registrationnumber="+self.iid)
-        mycursor.execute(sql)
-        mydb.commit()
-        mb.showinfo('Delete','this student deleted',parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("delete from student where registrationnumber="+self.iid)
+            mycursor.execute(sql)
+            mydb.commit()
+            mb.showinfo('Delete','this student deleted',parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     ### UPDATE FONTION ###
     def update(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("update student set firstname=%s,lastname=%s, registrationnumber=%s, email=%s, phonenumber=%s, level=%s, speciality=%s, groupe=%s where registrationnumber=%s")
-        val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get(),self.iid)
-        print(self.iid)
-        mycursor.execute(sql,val)
-        mydb.commit()
-        self.read()
-        self.reset()
-        mb.showinfo('update','this student\'s data is updated',parent=self.master)
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("update student set firstname=%s,lastname=%s, registrationnumber=%s, email=%s, phonenumber=%s, level=%s, speciality=%s, groupe=%s where registrationnumber=%s")
+            val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get(),self.iid)
+            print(self.iid)
+            mycursor.execute(sql,val)
+            mydb.commit()
+            self.read()
+            self.reset()
+            mb.showinfo('update','this student\'s data is updated',parent=self.master)
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     ### SEARCH FONTION ###
     def search(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        print(self.searchstudent.get())
-        sql = ("select * from student where registrationnumber="+self.searchstudent.get())
-        mycursor.execute(sql)
-        myresults = mycursor.fetchone()
-        self.table.delete(*self.table.get_children())
-        #print(myresults)
-        self.table.insert('', 'end', iid=myresults[0], values=myresults)
-        mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            print(self.searchstudent.get())
+            sql = ("select * from student where registrationnumber="+self.searchstudent.get())
+            mycursor.execute(sql)
+            myresults = mycursor.fetchone()
+            self.table.delete(*self.table.get_children())
+            #print(myresults)
+            self.table.insert('', 'end', iid=myresults[0], values=myresults)
+            mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
     
     
     

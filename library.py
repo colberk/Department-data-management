@@ -164,43 +164,51 @@ class library:
 
     ###### ADD FONTION ######
     def add(self):
-        mydb=mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="insert into library(registrationnumber,phonenumber,bookname,bookid,deliverydate,returndate) values (%s,%s,%s,%s,%s,%s)"
-        if (len(self.registrationN.get())==0 or len(self.phonenumber.get())==0 or len(self.bookname.get())==0 or len(self.bookid.get())==0 or len(self.deliverydate.get())==0 or  len(self.returndate.get())==0 ) :
-            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
-        else:
-            val=(self.registrationN.get(),self.phonenumber.get(),self.bookname.get(),self.bookid.get(),self.deliverydate.get(),self.returndate.get())
-            mycursor.execute(sql,val)
-            mydb.commit()
-            mydb.close()
-            mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
-            self.reset()
-            self.read()
+        try:
+            mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="insert into library(registrationnumber,phonenumber,bookname,bookid,deliverydate,returndate) values (%s,%s,%s,%s,%s,%s)"
+            if (len(self.registrationN.get())==0 or len(self.phonenumber.get())==0 or len(self.bookname.get())==0 or len(self.bookid.get())==0 or len(self.deliverydate.get())==0 or  len(self.returndate.get())==0 ) :
+                mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
+            else:
+                val=(self.registrationN.get(),self.phonenumber.get(),self.bookname.get(),self.bookid.get(),self.deliverydate.get(),self.returndate.get())
+                mycursor.execute(sql,val)
+                mydb.commit()
+                mydb.close()
+                mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
+                self.reset()
+                self.read()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     ###### READ FONTION ######
     def read(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="select * from library"
-        mycursor.execute(sql)
-        myresults=mycursor.fetchall()
-        self.table.delete(*self.table.get_children())
-        for res in myresults:
-            self.table.insert('','end',iid=res[0],values=res)
-            mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="select * from library"
+            mycursor.execute(sql)
+            myresults=mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     ###### SHOW FONTION ######
     def show(self,ev):
@@ -225,53 +233,65 @@ class library:
 
     ###### DELETE FONTION ######
     def delete(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("delete from library where id="+self.iid)
-        mycursor.execute(sql)
-        mydb.commit()
-        mb.showinfo('Delete','this DATA is deleted',parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("delete from library where id="+self.iid)
+            mycursor.execute(sql)
+            mydb.commit()
+            mb.showinfo('Delete','this DATA is deleted',parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     ###### UPDATE FONTION ######
     def update(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("update library set registrationnumber=%s,phonenumber=%s,bookname=%s,bookid=%s,deliverydate=%s,returndate=%s where id=%s")
-        val=(self.registrationN.get(),self.phonenumber.get(),self.bookname.get(),self.bookid.get(),self.deliverydate.get(),self.returndate.get(),self.iid)
-        mycursor.execute(sql,val)
-        mydb.commit()
-        mb.showinfo('update','this DATA is updated',parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("update library set registrationnumber=%s,phonenumber=%s,bookname=%s,bookid=%s,deliverydate=%s,returndate=%s where id=%s")
+            val=(self.registrationN.get(),self.phonenumber.get(),self.bookname.get(),self.bookid.get(),self.deliverydate.get(),self.returndate.get(),self.iid)
+            mycursor.execute(sql,val)
+            mydb.commit()
+            mb.showinfo('update','this DATA is updated',parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     ###### SEARCH FONTION ######
     def search(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        print(self.searchstudent.get())
-        sql = ("select * from library where id="+self.searchbook.get())
-        mycursor.execute(sql)
-        myresults = mycursor.fetchone()
-        self.table.delete(*self.table.get_children())
-        #print(myresults)
-        self.table.insert('', 'end', iid=myresults[0], values=myresults)
-        mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            print(self.searchstudent.get())
+            sql = ("select * from library where id="+self.searchbook.get())
+            mycursor.execute(sql)
+            myresults = mycursor.fetchone()
+            self.table.delete(*self.table.get_children())
+            #print(myresults)
+            self.table.insert('', 'end', iid=myresults[0], values=myresults)
+            mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()

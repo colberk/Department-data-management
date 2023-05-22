@@ -91,25 +91,29 @@ class Login:
         self.LoginButton.grid(row=2, column=0, columnspan=2, sticky='snew', pady=40, padx=50)
 
     def login(self):
-            mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-            )
+            try:
+                mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+                )
+            
 
-            mycursor = mydb.cursor()
-            sql = "select * from loginadmin where Username='" + self.username.get() + "' and Password='" + self.password.get() + "'"
-            mycursor.execute(sql)
-            res = mycursor.fetchone()
-            if (res == None):
-                mb.showerror('Failed Login', 'Invalid Username and Password ! please Try again')
-            else:
-                self.master.destroy()
-                window =Tk()
-                window.iconbitmap('mortarboard.ico')
-                win=main(window)
-                mainloop()
+                mycursor = mydb.cursor()
+                sql = "select * from loginadmin where Username='" + self.username.get() + "' and Password='" + self.password.get() + "'"
+                mycursor.execute(sql)
+                res = mycursor.fetchone()
+                if (res == None):
+                    mb.showerror('Failed Login', 'Invalid Username or Password ! please Try again')
+                else:
+                    self.master.destroy()
+                    window =Tk()
+                    window.iconbitmap('mortarboard.ico')
+                    win=main(window)
+                    mainloop()
+            except:
+                mb.showerror('Login Failed','Connection failed, please check your server connection')
 
     
 

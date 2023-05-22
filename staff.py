@@ -170,46 +170,52 @@ class staff:
 
     #### ADD FONCTION  ####
     def add(self):
-        mydb=mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="insert into staff(firstname,lastname,IDcardnumber,email,phonenumber,job,secondaryjob) values (%s,%s,%s,%s,%s,%s,%s)"
-        if (len(self.firstname.get())==0 or len(self.lastname.get())==0 or len(self.idn.get())==0  or len(self.email.get())==0 or len(self.phonenumber.get())==0 or len(self.mainjob.get())==0 or len(self.secjob.get())==0) :
-            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
-        else:
-            val=(self.firstname.get(),self.lastname.get(),self.idn.get(),self.email.get(),self.phonenumber.get(),self.mainjob.get(),self.secjob.get())
-            mycursor.execute(sql,val)
-            mydb.commit()
-            mydb.close()
-            mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
-            self.read()
-            self.reset()
-
-            
+        try:
+            mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="insert into staff(firstname,lastname,IDcardnumber,email,phonenumber,job,secondaryjob) values (%s,%s,%s,%s,%s,%s,%s)"
+            if (len(self.firstname.get())==0 or len(self.lastname.get())==0 or len(self.idn.get())==0  or len(self.email.get())==0 or len(self.phonenumber.get())==0 or len(self.mainjob.get())==0 or len(self.secjob.get())==0) :
+                mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
+            else:
+                val=(self.firstname.get(),self.lastname.get(),self.idn.get(),self.email.get(),self.phonenumber.get(),self.mainjob.get(),self.secjob.get())
+                mycursor.execute(sql,val)
+                mydb.commit()
+                mydb.close()
+                mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
+                self.read()
+                self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()  
             
 
     #### READ FONCTION  ####
 
     def read(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor=mydb.cursor()
-        sql="select * from staff"
-        mycursor.execute(sql)
-        myresults=mycursor.fetchall()
-        self.table.delete(*self.table.get_children())
-        for res in myresults:
-            self.table.insert('','end',iid=res[0],values=res)
-            mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor=mydb.cursor()
+            sql="select * from staff"
+            mycursor.execute(sql)
+            myresults=mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     #### SHOW FONCTION  ####
     def show(self,ev):
@@ -237,57 +243,68 @@ class staff:
 
     #### DELETE FONCTION  ####
     def delete(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("delete from staff where id="+self.iid)
-        mycursor.execute(sql)
-        mydb.commit()
-        mb.showinfo('Delete','this membre is deleted',parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("delete from staff where id="+self.iid)
+            mycursor.execute(sql)
+            mydb.commit()
+            mb.showinfo('Delete','this membre is deleted',parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
 
     #### UPDATE FONCTION  ####
     def update(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("update staff set firstname=%s, lastname=%s, IDcardnumber=%s, email=%s, phonenumber=%s, job=%s, secondaryjob=%s where id=%s")
-        val=(self.firstname.get(),self.lastname.get(),self.idn.get(),self.email.get(),self.phonenumber.get(),self.mainjob.get(),self.secjob.get(),self.iid)
-        mycursor.execute(sql,val)
-        mydb.commit()
-        self.read()
-        self.reset()
-        mb.showinfo('update','this membre is updated',parent=self.master)
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("update staff set firstname=%s, lastname=%s, IDcardnumber=%s, email=%s, phonenumber=%s, job=%s, secondaryjob=%s where id=%s")
+            val=(self.firstname.get(),self.lastname.get(),self.idn.get(),self.email.get(),self.phonenumber.get(),self.mainjob.get(),self.secjob.get(),self.iid)
+            mycursor.execute(sql,val)
+            mydb.commit()
+            self.read()
+            self.reset()
+            mb.showinfo('update','this membre is updated',parent=self.master)
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
         
 
     #### SEARCH FONCTION  ####
     def search(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        print(self.searchstudent.get())
-        sql = ("select * from staff where id="+self.searchstudent.get())
-        mycursor.execute(sql)
-        myresults = mycursor.fetchone()
-        self.table.delete(*self.table.get_children())
-        #print(myresults)
-        self.table.insert('', 'end', iid=myresults[0], values=myresults)
-        mydb.commit()
-        mydb.close()
-
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            print(self.searchstudent.get())
+            sql = ("select * from staff where id="+self.searchstudent.get())
+            mycursor.execute(sql)
+            myresults = mycursor.fetchone()
+            self.table.delete(*self.table.get_children())
+            #print(myresults)
+            self.table.insert('', 'end', iid=myresults[0], values=myresults)
+            mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
         

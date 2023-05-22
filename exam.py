@@ -160,41 +160,49 @@ class exam:
         self.table.bind("<ButtonRelease-1>", self.show)
 
     def add(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = "insert into exam(groupex,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
-        if (len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
-            mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
-        else:
-            val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get(),self.time.get())
-            mycursor.execute(sql,val)
-            mydb.commit()
-            mydb.close()
-            mb.showinfo('Successfully added', 'Data inserted Successfully', parent=self.master)
-            self.reset()
-            self.read()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = "insert into exam(groupex,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s)"
+            if (len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
+                mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
+            else:
+                val = (self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get(),self.time.get())
+                mycursor.execute(sql,val)
+                mydb.commit()
+                mydb.close()
+                mb.showinfo('Successfully added', 'Data inserted Successfully', parent=self.master)
+                self.reset()
+                self.read()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     def read(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = "select * from Exam"
-        mycursor.execute(sql)
-        myresults = mycursor.fetchall()
-        self.table.delete(*self.table.get_children())
-        for res in myresults:
-            self.table.insert('', 'end', iid=res[0], values=res)
-            mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = "select * from Exam"
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('', 'end', iid=res[0], values=res)
+                mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     def show(self, ev):
         self.iid = self.table.focus()
@@ -216,50 +224,62 @@ class exam:
         self.TimeEntry.set("")
 
     def delete(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("delete from exam where id="+ self.iid)
-        mycursor.execute(sql)
-        mydb.commit()
-        mb.showinfo('Delete', 'Data deleted successfully', parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("delete from exam where id="+ self.iid)
+            mycursor.execute(sql)
+            mydb.commit()
+            mb.showinfo('Delete', 'Data deleted successfully', parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     def update(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        sql = ("update exam set groupex=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
-        val = (self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get(), self.time.get(),self.iid)
-        mycursor.execute(sql, val)
-        mydb.commit()
-        mb.showinfo('update', 'Data updated successfully', parent=self.master)
-        self.read()
-        self.reset()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            sql = ("update exam set groupex=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
+            val = (self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get(), self.time.get(),self.iid)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            mb.showinfo('update', 'Data updated successfully', parent=self.master)
+            self.read()
+            self.reset()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
 
     def search(self):
-        mydb = mc.connect(
-            host='localhost',
-            user='root',
-            password='',
-            database='university'
-        )
-        mycursor = mydb.cursor()
-        print(self.searchexam.get())
-        sql = ("select * from exam where id=" + self.searchexam.get())
-        mycursor.execute(sql)
-        myresults = mycursor.fetchone()
-        self.table.delete(*self.table.get_children())
-        # print(myresults)
-        self.table.insert('', 'end', iid=myresults[0], values=myresults)
-        mydb.commit()
-        mydb.close()
+        try:
+            mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+            mycursor = mydb.cursor()
+            print(self.searchexam.get())
+            sql = ("select * from exam where id=" + self.searchexam.get())
+            mycursor.execute(sql)
+            myresults = mycursor.fetchone()
+            self.table.delete(*self.table.get_children())
+            # print(myresults)
+            self.table.insert('', 'end', iid=myresults[0], values=myresults)
+            mydb.commit()
+            mydb.close()
+        except:
+            mb.showerror('Login Failed','Connection failed, please check your server connection')
+            self.master.destroy()
