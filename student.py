@@ -130,11 +130,6 @@ class student:
         self.buttonsearch = Button(self.framerighttop, text='Search', fg='#4F4F4F',command=self.search, font=('tahoma', 12, 'bold'),width=20)
         self.buttonsearch.grid(row=0, column=1, sticky='nsew', pady=10, padx=10)
         
-        self.buttonselect = Entry(self.framerighttop,fg='#4F4F4F',font=('tahoma', 12, 'bold'),width=10)
-        self.buttonselect.grid(row=0, column=2, sticky='snew',  pady=10, padx=10)
-        
-        self.buttonselect = Button(self.framerighttop, text='Select', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
-        self.buttonselect.grid(row=0, column=3, sticky='nsew', pady=10, padx=10)
 
 
         self.framerighttop.grid_columnconfigure(0, weight=1)
@@ -143,6 +138,9 @@ class student:
 
 
         self.framerighttop.pack(fill=X)
+
+
+        
 
         
         #################  TREE FRAME VIEW  #######################
@@ -174,6 +172,41 @@ class student:
         self.table.column("Group",anchor=W,width=50)
         self.read()
         self.table.bind("<ButtonRelease>",self.show)
+
+
+        #################   BUTTOM RIGHT FRAME   #######################
+
+        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom.pack(fill=X)
+
+        #################   LABELS #######################
+        self.LevelSelect = Label(self.framerightbuttom,text="Level:",fg='#4F4F4F',font=('tahoma',9))
+        self.LevelSelect.place(x=150, y=20, width=100, height=40)
+
+        self.SpecialitySelect = Label(self.framerightbuttom,text="Speciality:",fg='#4F4F4F',font=('tahoma',9))
+        self.SpecialitySelect.place(x=250, y=20, width=100, height=40)
+
+        self.GroupSelect = Label(self.framerightbuttom,text="Group:",fg='#4F4F4F',font=('tahoma',9))
+        self.GroupSelect.place(x=350,y=20,width=100,height=40)
+
+
+        self.levelselect=StringVar()
+        self.specialityselect=StringVar()
+        self.groupselect=StringVar()
+
+
+        #################   ENTRIES #######################
+        self.LevelEntrySelect = ttk.Combobox(self.framerightbuttom, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.levelselect)
+        self.LevelEntrySelect.place(x=150, y=80, width=100, height=40)
+
+        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values=["S1","S2","S3"],state='readonly',textvariable=self.specialityselect)
+        self.SpecialityEntrySelect.place(x=250, y=80, width=100, height=40)
+
+        self.GroupEntrySelect = ttk.Combobox(self.framerightbuttom,values=["1","2","3"],state='readonly',textvariable=self.groupselect)
+        self.GroupEntrySelect.place(x=350,y=80,width=100,height=40)
+
+        self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
+        self.buttonselect.place(x=500,y=80,width=200,height=40)
     
     
     
@@ -303,14 +336,24 @@ class student:
                 database='university'
             )
             mycursor = mydb.cursor()
-            sql = ("update student set firstname=%s,lastname=%s, registrationnumber=%s, email=%s, phonenumber=%s, level=%s, speciality=%s, groupe=%s where registrationnumber=%s")
-            val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get(),self.iid)
-            print(self.iid)
-            mycursor.execute(sql,val)
-            mydb.commit()
-            self.read()
-            self.reset()
-            mb.showinfo('update','this student\'s data is updated',parent=self.master)
+            if (len(self.firstname.get())==0 
+                or len(self.lastname.get())==0 
+                or len(self.registration.get())==0 
+                or len(self.email.get())==0 
+                or len(self.phoneNum.get())==0 
+                or len(self.level.get())==0 
+                or len(self.speciality.get())==0 
+                or len(self.group.get())==0 ) :
+                mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
+            else:
+                sql = ("update student set firstname=%s,lastname=%s, registrationnumber=%s, email=%s, phonenumber=%s, level=%s, speciality=%s, groupe=%s where registrationnumber=%s")
+                val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get(),self.iid)
+                print(self.iid)
+                mycursor.execute(sql,val)
+                mydb.commit()
+                self.read()
+                self.reset()
+                mb.showinfo('update','this student\'s data is updated',parent=self.master)
         except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
             self.master.destroy()
@@ -318,15 +361,17 @@ class student:
 
     ### SEARCH FONTION ###
     def search(self):
-        try:
-            mydb = mc.connect(
-                host='localhost',
-                user='root',
-                password='',
-                database='university'
-            )
-            mycursor = mydb.cursor()
-            print(self.searchstudent.get())
+        mydb = mc.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='university'
+        )
+        mycursor = mydb.cursor()
+        print(self.searchstudent.get())
+        if (len(self.searchstudent.get())==0 ) :
+            mb.showerror('Error', 'Data missing, please, make sure to fill the information in the search bar',parent=self.master)
+        else:
             sql = ("select * from student where registrationnumber="+self.searchstudent.get())
             mycursor.execute(sql)
             myresults = mycursor.fetchone()
@@ -335,9 +380,77 @@ class student:
             self.table.insert('', 'end', iid=myresults[0], values=myresults)
             mydb.commit()
             mydb.close()
-        except:
-            mb.showerror('Login Failed','Connection failed, please check your server connection')
-            self.master.destroy()
+
+    
+     ### FILTER FONTION ###
+    def filter(self):
+        mydb = mc.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='university'
+        )
+        mycursor = mydb.cursor()
+        if (len(self.levelselect.get())==0 and len(self.specialityselect.get())==0 ) :
+            mb.showerror('Error', 'Data missing, please, make sure to fill at least the level or speciality to filter',parent=self.master)
+        
+        elif(len(self.groupselect.get())==0 and len(self.specialityselect.get())==0):
+            sql = ("select * from student where level='"+self.levelselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.groupselect.get())==0 and len(self.levelselect.get())==0):
+            sql = ("select * from student where speciality='"+self.specialityselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.groupselect.get())==0):
+            sql = ("select * from student where level='"+self.levelselect.get()+"' AND speciality='"+self.specialityselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.levelselect.get())==0):
+            sql = ("select * from student where speciality='"+self.specialityselect.get()+"' AND groupe='"+self.groupselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.specialityselect.get())==0):
+            sql = ("select * from student where level='"+self.levelselect.get()+"' AND groupe='"+self.groupselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+
+        else:
+            sql = ("select * from student where level='"+self.levelselect.get()+"' AND speciality='"+self.specialityselect.get()+"' AND groupe='"+self.groupselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[2],values=res)
+                mydb.commit()
+            mydb.close()
+
+    
     
     
     
