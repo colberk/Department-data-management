@@ -156,7 +156,40 @@ class library:
         self.table.column("DeliveryDate",anchor=W,width=120)
         self.table.column("ReturnDate",anchor=W,width=120)
         self.read()
+        
         self.table.bind("<ButtonRelease>",self.show)
+
+
+        #################   BUTTOM RIGHT FRAME   #######################
+        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom.pack(fill=X)
+
+        #################   LABELS #######################
+        self.DeliverySelect = Label(self.framerightbuttom,text="Delivery date:",fg='#4F4F4F',font=('tahoma',9))
+        self.DeliverySelect.place(x=150, y=20, width=100, height=40)
+
+        self.ReturnSelect = Label(self.framerightbuttom,text="return date:",fg='#4F4F4F',font=('tahoma',9))
+        self.ReturnSelect.place(x=250, y=20, width=100, height=40)
+
+        
+
+
+        self.deliveryselect=StringVar()
+        self.returnselect=StringVar()
+        
+
+
+        #################   ENTRIES #######################
+        self.DeliverySelect = DateEntry(self.framerightbuttom ,textvariable=self.deliveryselect, date_pattern="yyyy-mm-dd")
+        self.DeliverySelect.place(x=150, y=80, width=100, height=40)
+
+        self.ReturnSelect = DateEntry(self.framerightbuttom,textvariable=self.returnselect, date_pattern="yyyy-mm-dd")
+        self.ReturnSelect.place(x=250, y=80, width=100, height=40)
+
+        self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
+        self.buttonselect.place(x=450,y=80,width=200,height=40)
+
+        self.reset()
 
 
     
@@ -186,6 +219,9 @@ class library:
         except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
             self.master.destroy()
+
+
+        
 
 
     ###### READ FONTION ######
@@ -228,8 +264,10 @@ class library:
         self.PhoneNumberEntry.delete(0, 'end')
         self.BookNameEntry.delete(0, 'end')
         self.BookIDEntry.delete(0, 'end')
-        self.DeliveryDateEntry.selection_clear()
-        self.ReturnDateEntry.selection_clear()
+        self.DeliveryDateEntry.delete(0,END)
+        self.ReturnDateEntry.delete(0,END)
+        self.ReturnSelect.delete(0,END)
+        self.DeliverySelect.delete(0,END)
 
     ###### DELETE FONTION ######
     def delete(self):
@@ -295,3 +333,44 @@ class library:
         except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
             self.master.destroy()
+
+    ### FILTER FONTION ###
+    def filter(self):
+        mydb = mc.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='university'
+        )
+        mycursor = mydb.cursor()
+        if (len(self.deliveryselect.get())==0 and len(self.returnselect.get())==0 ) :
+            mb.showerror('Error', 'Data missing, please, make sure to fill the delivery date job or the return date to filter',parent=self.master)
+        
+        elif(len(self.deliveryselect.get())==0):
+            sql = ("select * from library where returndate='"+self.returnselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.returnselect.get())==0):
+            sql = ("select * from library where deliverydate='"+self.deliveryselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+
+        else:
+            sql = ("select * from library where deliverydate='"+self.deliveryselect.get()+"' AND returndate='"+self.returnselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()

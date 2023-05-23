@@ -139,6 +139,35 @@ class Department:
 
         self.read()
         self.table.bind("<ButtonRelease>",self.show)
+
+        #################   BUTTOM RIGHT FRAME   #######################
+        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom.pack(fill=X)
+
+        #################   LABELS #######################
+        self.LevelSelect = Label(self.framerightbuttom,text="Level:",fg='#4F4F4F',font=('tahoma',9))
+        self.LevelSelect.place(x=150, y=20, width=100, height=40)
+
+        self.SpecialitySelect = Label(self.framerightbuttom,text="Speciality:",fg='#4F4F4F',font=('tahoma',9))
+        self.SpecialitySelect.place(x=250, y=20, width=100, height=40)
+
+        
+
+
+        self.levelselect=StringVar()
+        self.specialityselect=StringVar()
+        
+
+
+        #################   ENTRIES #######################
+        self.LevelEntrySelect = ttk.Combobox(self.framerightbuttom, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.levelselect)
+        self.LevelEntrySelect.place(x=150, y=80, width=100, height=40)
+
+        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values=["S1","S2","S3"],state='readonly',textvariable=self.specialityselect)
+        self.SpecialityEntrySelect.place(x=250, y=80, width=100, height=40)
+
+        self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
+        self.buttonselect.place(x=450,y=80,width=200,height=40)
     
     
     
@@ -278,5 +307,47 @@ class Department:
         except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
             self.master.destroy()
+
+    ### FILTER FONTION ###
+    def filter(self):
+        mydb = mc.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='university'
+        )
+        mycursor = mydb.cursor()
+        if (len(self.levelselect.get())==0 and len(self.specialityselect.get())==0 ) :
+            mb.showerror('Error', 'Data missing, please, make sure to fill at least the level or speciality to filter',parent=self.master)
+        
+        elif(len(self.levelselect.get())==0):
+            sql = ("select * from speciality where specialityname='"+self.specialityselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.specialityselect.get())==0):
+            sql = ("select * from speciality where level='"+self.levelselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+
+        else:
+            sql = ("select * from speciality where level='"+self.levelselect.get()+"' AND specialityname='"+self.specialityselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+
     
     

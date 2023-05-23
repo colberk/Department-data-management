@@ -164,6 +164,36 @@ class staff:
         self.table.column("SecJob", anchor=W,width=120)
         self.read()
         self.table.bind("<ButtonRelease>",self.show)
+
+
+        #################   BUTTOM RIGHT FRAME   #######################
+        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom.pack(fill=X)
+
+        #################   LABELS #######################
+        self.MainJobSelect = Label(self.framerightbuttom,text="Main Job:",fg='#4F4F4F',font=('tahoma',9))
+        self.MainJobSelect.place(x=150, y=20, width=100, height=40)
+
+        self.SecJobSelect = Label(self.framerightbuttom,text="Secondary job:",fg='#4F4F4F',font=('tahoma',9))
+        self.SecJobSelect.place(x=250, y=20, width=100, height=40)
+
+        
+
+
+        self.mainjobselect=StringVar()
+        self.secjobselect=StringVar()
+        
+
+
+        #################   ENTRIES #######################
+        self.MainJobEntrySelect = ttk.Combobox(self.framerightbuttom, values=["Professor","Professor-grade1","Professor-grade2","Employee"],state='readonly',textvariable=self.mainjobselect)
+        self.MainJobEntrySelect.place(x=150, y=80, width=100, height=40)
+
+        self.SecJobEntrySelect = ttk.Combobox(self.framerightbuttom,  values=["None","Job1","Job2","Job3"],state='readonly',textvariable=self.secjobselect)
+        self.SecJobEntrySelect.place(x=250, y=80, width=100, height=40)
+
+        self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
+        self.buttonselect.place(x=450,y=80,width=200,height=40)
     
     
     ############# BUTTONS FONCTIONS #################
@@ -306,5 +336,45 @@ class staff:
         except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
             self.master.destroy()
+    
 
+    ### FILTER FONTION ###
+    def filter(self):
+        mydb = mc.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='university'
+        )
+        mycursor = mydb.cursor()
+        if (len(self.mainjobselect.get())==0 and len(self.secjobselect.get())==0 ) :
+            mb.showerror('Error', 'Data missing, please, make sure to fill at least the main job or the secondary job to filter',parent=self.master)
         
+        elif(len(self.mainjobselect.get())==0):
+            sql = ("select * from staff where secondaryjob='"+self.secjobselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+        elif(len(self.secjobselect.get())==0):
+            sql = ("select * from staff where job='"+self.mainjobselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
+
+        else:
+            sql = ("select * from staff where job='"+self.mainjobselect.get()+"' AND secondaryjob='"+self.secjobselect.get()+"'")
+            mycursor.execute(sql)
+            myresults = mycursor.fetchall()
+            self.table.delete(*self.table.get_children())
+            for res in myresults:
+                self.table.insert('','end',iid=res[0],values=res)
+                mydb.commit()
+            mydb.close()
