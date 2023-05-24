@@ -348,7 +348,7 @@ class staff:
         )
         mycursor = mydb.cursor()
         if (len(self.mainjobselect.get())==0 and len(self.secjobselect.get())==0 ) :
-            mb.showerror('Error', 'Data missing, please, make sure to fill at least the main job or the secondary job to filter',parent=self.master)
+            mb.showerror('Error', 'Data missing, please, make sure to fill the main job or the secondary job to filter',parent=self.master)
         
         elif(len(self.mainjobselect.get())==0):
             sql = ("select * from staff where secondaryjob='"+self.secjobselect.get()+"'")

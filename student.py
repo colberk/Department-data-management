@@ -298,6 +298,9 @@ class student:
         self.LevelEntry.set("")
         self.SpecialityEntry.set("")
         self.GroupEntry.set("")
+        self.SpecialityEntrySelect.set("")
+        self.LevelEntrySelect.set("")
+        self.GroupEntrySelect.set("")
 
         
 

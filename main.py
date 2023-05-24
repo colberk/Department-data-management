@@ -63,7 +63,7 @@ class Login:
     def __init__(self, window):
         self.master = window
         self.master.title("Login Window")
-        self.master.geometry("450x400+200+200")
+        self.master.geometry("450x400+450+150")
         
         self.img6 = Image.open('login.png')
         self.img6.thumbnail((200, 200))

@@ -88,7 +88,7 @@ class Department:
 
 
         #################   RIGHT FRAME #######################
-        self.frameright = Frame(self.master, width=800)
+        self.frameright = Frame(self.master, width=600)
         self.frameright.pack(side=LEFT, fill=Y)
 
         self.framerighttop=Frame(self.frameright,height=50,pady=5,padx=5)
@@ -96,18 +96,11 @@ class Department:
         self.searchspeciality = StringVar()
 
 
-        self.SearchSpeciality = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=10,textvariable=self.searchspeciality)
+        self.SearchSpeciality = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=50,textvariable=self.searchspeciality)
         self.SearchSpeciality.grid(row=0, column=0, sticky='nsew', pady=10, padx=10)
         
         self.buttonsearch = Button(self.framerighttop, text='Search', fg='#4F4F4F',command=self.search, font=('tahoma', 12, 'bold'),width=20)
         self.buttonsearch.grid(row=0, column=1, sticky='nsew', pady=10, padx=10)
-        
-        self.buttonselect = Entry(self.framerighttop,fg='#4F4F4F',font=('tahoma', 12, 'bold'),width=10)
-        self.buttonselect.grid(row=0, column=2, sticky='snew',  pady=10, padx=10)
-        
-        self.buttonselect = Button(self.framerighttop, text='Select', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
-        self.buttonselect.grid(row=0, column=3, sticky='nsew', pady=10, padx=10)
-
 
         self.framerighttop.grid_columnconfigure(0, weight=1)
         self.framerighttop.grid_columnconfigure(1, weight=1)
@@ -242,6 +235,8 @@ class Department:
         self.SpecialityNameEntry.delete(0,'end')
         self.LevelEntry.set("")
         self.NumberGroupsEntry.set("")
+        self.SpecialityEntrySelect.set("")
+        self.LevelEntrySelect.set("")
 
 
     ### DELETE FONTION ###
