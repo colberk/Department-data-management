@@ -26,7 +26,7 @@ class exam:
     def openExamWindow(self):
         self.master = Toplevel()
         self.master.title('Exam Management')
-        self.master.geometry("1200x600+50+50")
+        self.master.geometry("1200x650+50+50")
         self.master.iconbitmap('mortarboard.ico')
 
 
@@ -56,14 +56,17 @@ class exam:
         self.ModuleLabel = Label(self.frameleft, text='Module:', fg='#4F4F4F', font=('tahoma', 9))
         self.ModuleLabel.place(x=10, y=230, width=120, height=40)
         
-        self.ProfLabel = Label(self.frameleft, text='Teachers:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ProfLabel = Label(self.frameleft, text='Teachers(guards):', fg='#4F4F4F', font=('tahoma', 9))
         self.ProfLabel.place(x=10, y=280, width=120, height=40)
+
+        self.ResProfLabel = Label(self.frameleft, text='Responsible professor:', fg='#4F4F4F', font=('tahoma', 9))
+        self.ResProfLabel.place(x=10, y=330, width=120, height=40)
         
         self.DateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.DateLabel.place(x=15, y=330, width=120, height=40)
+        self.DateLabel.place(x=15, y=380, width=120, height=40)
         
         self.TimeLabel = Label(self.frameleft, text='Time:', fg='#4F4F4F', font=('tahoma', 9))
-        self.TimeLabel.place(x=15, y=380, width=120, height=40)
+        self.TimeLabel.place(x=15, y=430, width=120, height=40)
 
 
         self.speciality = StringVar()
@@ -72,6 +75,7 @@ class exam:
         self.classroom = StringVar()
         self.module = StringVar()
         self.prof = StringVar()
+        self.resposibleprof = StringVar()
         self.date = StringVar()
         self.time = StringVar()
 
@@ -95,31 +99,34 @@ class exam:
         
         self.ProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.prof)
         self.ProfEntry.place(x=170, y=280, width=200, height=40)
+
+        self.ResProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.resposibleprof)
+        self.ResProfEntry.place(x=170, y=330, width=200, height=40)
         
         self.DateEntry = DateEntry(self.frameleft ,textvariable=self.date, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
-        self.DateEntry.place(x=170, y=330,width=200,height=40)
+        self.DateEntry.place(x=170, y=380,width=200,height=40)
         
         self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],
                                       state='readonly', textvariable=self.time)
-        self.TimeEntry.place(x=170, y=380, width=200,height=30)
+        self.TimeEntry.place(x=170, y=430, width=200,height=30)
 
 
 
         ####################   BUTTONS    ######################
         self.buttonAdd = Button(self.frameleft, text="ADD",command=self.add,  font=('tahoma', 10))
-        self.buttonAdd.place(x=20, y=450, width=60, height=60)
+        self.buttonAdd.place(x=20, y=500, width=60, height=60)
         
         self.buttonUpdate = Button(self.frameleft,  text="UPDATE",command=self.update, font=('tahoma', 10))
-        self.buttonUpdate.place(x=100, y=450, width=60, height=60)
+        self.buttonUpdate.place(x=100, y=500, width=60, height=60)
         
         self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete, font=('tahoma', 10))
-        self.buttonDelete.place(x=180, y=450, width=60, height=60)
+        self.buttonDelete.place(x=180, y=500, width=60, height=60)
         
         self.buttonRead = Button(self.frameleft, text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=450, width=60, height=60)
+        self.buttonRead.place(x=260, y=500, width=60, height=60)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=450, width=60, height=60)
+        self.buttonReset.place(x=340, y=500, width=60, height=60)
 
 
 
@@ -150,7 +157,7 @@ class exam:
         self.frameView.pack(fill=Y)
         self.scrollbar = Scrollbar(self.frameView, orient=VERTICAL)
         self.table = ttk.Treeview(self.frameView,
-                                  columns=("ID","Speciality","Level","GroupeName","ClassRoom","Module","Professor","Date","Time"),
+                                  columns=("ID","Speciality","Level","GroupeName","ClassRoom","Module","Guadrs","Responsible Professor","Date","Time"),
                                   show='headings', yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=RIGHT, fill=Y)
         self.scrollbar.config(command=self.table.yview)
@@ -162,17 +169,19 @@ class exam:
         self.table.heading("GroupeName", text="GroupeName")
         self.table.heading("ClassRoom", text="ClassRoom")
         self.table.heading("Module", text="Module")
-        self.table.heading("Professor", text="Professor")
+        self.table.heading("Guadrs", text="Guadrs")
+        self.table.heading("Responsible Professor", text="Responsible Professor")
         self.table.heading("Date", text="Date")
         self.table.heading("Time", text="Time")
 
         self.table.column("ID", anchor=W, width=7)
         self.table.column("Speciality", anchor=W,width=100)
         self.table.column("Level", anchor=W,width=50)
-        self.table.column("GroupeName", anchor=W,width=100)
+        self.table.column("GroupeName", anchor=W,width=50)
         self.table.column("ClassRoom", anchor=W,width=100)
         self.table.column("Module", anchor=W,width=100)
-        self.table.column("Professor", anchor=W,width=100)
+        self.table.column("Guadrs", anchor=W,width=100)
+        self.table.column("Responsible Professor", anchor=W,width=100)
         self.table.column("Date", anchor=W,width=100)
         self.table.column("Time", anchor=W,width=100)
         self.read()
@@ -188,11 +197,11 @@ class exam:
                 database='university'
             )
             mycursor = mydb.cursor()
-            sql = "insert into exam(speciality,level,groupex,classroom,module,professor,date,time) values (%s,%s,%s,%s,%s,%s,%s,%s)"
-            if (len(self.speciality.get())==0 or len(self.level.get()) == 0 or len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
+            sql = "insert into exam(speciality,level,groupex,classroom,module,professor,responsibleprof,date,time) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            if (len(self.speciality.get())==0 or len(self.level.get()) == 0 or len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.resposibleprof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
                 mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
             else:
-                val = (self.speciality.get(),self.level.get(),self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(),self.date.get(),self.time.get())
+                val = (self.speciality.get(),self.level.get(),self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(), self.resposibleprof.get(),self.date.get(),self.time.get())
                 mycursor.execute(sql,val)
                 mydb.commit()
                 mydb.close()
@@ -235,8 +244,9 @@ class exam:
         self.classroom.set(val[4])
         self.module.set(val[5])
         self.prof.set(val[6])
-        self.date.set(val[7])
-        self.time.set(val[8])
+        self.resposibleprof.set(val[7])
+        self.date.set(val[8])
+        self.time.set(val[9])
 
     def reset(self):
         self.SpecialityEntry.delete(0, 'end')
@@ -244,6 +254,7 @@ class exam:
         self.GroupEntry.delete(0, 'end')
         self.ClassroomEntry.delete(0, 'end')
         self.ProfEntry.delete(0, 'end')
+        self.ResProfEntry.delete(0, 'end')
         self.ModuleEntry.delete(0, 'end')
         self.DateEntry.delete(0,END)
         self.TimeEntry.set("")
@@ -269,7 +280,7 @@ class exam:
 
     def update(self):
         try:
-            if (len(self.speciality.get())==0 or len(self.level.get()) == 0 or len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
+            if (len(self.speciality.get())==0 or len(self.level.get()) == 0 or len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.resposibleprof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
                 mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
             else:
                 mydb = mc.connect(
@@ -279,8 +290,8 @@ class exam:
                     database='university'
                 )
                 mycursor = mydb.cursor()
-                sql = ("update exam set speciality=%s,level=%s,groupex=%s,classroom=%s,module=%s,professor=%s,date=%s,time=%s where id=%s")
-                val = (self.speciality.get(),self.level.get(),self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(), self.date.get(), self.time.get(),self.iid)
+                sql = ("update exam set speciality=%s,level=%s,groupex=%s,classroom=%s,module=%s,professor=%s,responsibleprof=%s,date=%s,time=%s where id=%s")
+                val = (self.speciality.get(),self.level.get(),self.group.get(), self.classroom.get(), self.module.get(),self.prof.get(),self.resposibleprof.get(), self.date.get(), self.time.get(),self.iid)
                 mycursor.execute(sql, val)
                 mydb.commit()
                 mb.showinfo('update', 'Data updated successfully', parent=self.master)
