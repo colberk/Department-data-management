@@ -137,6 +137,20 @@ class Department:
         self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
         self.framerightbuttom.pack(fill=X)
 
+
+        mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+        )
+        mycursor=mydb.cursor()
+        sql="SELECT specialityname FROM speciality"
+        mycursor.execute(sql)
+        specialityvalues=mycursor.fetchall()
+        specialityvalues=list(set(specialityvalues))
+        string_list = [str(element).replace("(", "").replace(")", "").replace("'", "").replace(",", "") for element in specialityvalues]
+
         #################   LABELS #######################
         self.LevelSelect = Label(self.framerightbuttom,text="Level:",fg='#4F4F4F',font=('tahoma',9))
         self.LevelSelect.place(x=150, y=20, width=100, height=40)
@@ -156,11 +170,14 @@ class Department:
         self.LevelEntrySelect = ttk.Combobox(self.framerightbuttom, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.levelselect)
         self.LevelEntrySelect.place(x=150, y=80, width=100, height=40)
 
-        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values=["S1","S2","S3"],state='readonly',textvariable=self.specialityselect)
+        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values = string_list,state='readonly',textvariable=self.specialityselect)
         self.SpecialityEntrySelect.place(x=250, y=80, width=100, height=40)
 
         self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
         self.buttonselect.place(x=450,y=80,width=200,height=40)
+
+        mydb.commit()
+        mydb.close()
     
     
     

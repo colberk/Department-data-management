@@ -80,15 +80,36 @@ class exam:
         self.time = StringVar()
 
 
+        mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+        )
+        mycursor=mydb.cursor()
+        sql="SELECT specialityname FROM speciality"
+        mycursor.execute(sql)
+        specialityvalues=mycursor.fetchall()
+        specialityvalues=list(set(specialityvalues))
+
+        mycursor1=mydb.cursor()
+        sql1="SELECT CONCAT(firstname,' ', lastname) FROM staff where job = 'Professor' OR job= 'Professor-grade1' OR  job='Professor-grade2'"
+        mycursor1.execute(sql1)
+        staffvalues=mycursor1.fetchall()
+        staffvalues=list(set(staffvalues))
+        staffvalues = [str(element).replace("(", "").replace(")", "").replace("'", "").replace(",", "") for element in staffvalues]
+        
+
+
 
         ####################   ENTRIES    ######################
-        self.SpecialityEntry = ttk.Combobox(self.frameleft, values=["S1","S2","S3"],state='readonly', textvariable=self.speciality)
+        self.SpecialityEntry = ttk.Combobox(self.frameleft, values=specialityvalues,state='readonly', textvariable=self.speciality)
         self.SpecialityEntry.place(x=170, y=30, width=200, height=40)
 
         self.LevelEntry = ttk.Combobox(self.frameleft, values=["L1","L2","L3","M1","M2","Phd"],state='readonly', textvariable=self.level)
         self.LevelEntry.place(x=170, y=80, width=200, height=40)
 
-        self.GroupEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.group)
+        self.GroupEntry = ttk.Combobox(self.frameleft,values=["1","2","3"],state='readonly', textvariable=self.group)
         self.GroupEntry.place(x=170, y=130, width=200, height=40)
         
         self.ClassroomEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.classroom)
@@ -97,10 +118,10 @@ class exam:
         self.ModuleEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.module)
         self.ModuleEntry.place(x=170, y=230, width=200, height=40)
         
-        self.ProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.prof)
+        self.ProfEntry = ttk.Combobox(self.frameleft, values=staffvalues,state='readonly', textvariable=self.prof)
         self.ProfEntry.place(x=170, y=280, width=200, height=40)
 
-        self.ResProfEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.resposibleprof)
+        self.ResProfEntry = ttk.Combobox(self.frameleft, values=staffvalues,state='readonly', textvariable=self.resposibleprof)
         self.ResProfEntry.place(x=170, y=330, width=200, height=40)
         
         self.DateEntry = DateEntry(self.frameleft ,textvariable=self.date, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
@@ -109,6 +130,10 @@ class exam:
         self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],
                                       state='readonly', textvariable=self.time)
         self.TimeEntry.place(x=170, y=430, width=200,height=30)
+
+
+        mydb.commit()
+        mydb.close()
 
 
 

@@ -69,6 +69,22 @@ class student:
         self.speciality = StringVar()
         self.group = StringVar()
 
+        mydb=mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+        )
+        mycursor=mydb.cursor()
+        sql="SELECT specialityname FROM speciality"
+        mycursor.execute(sql)
+        specialityvalues=mycursor.fetchall()
+        specialityvalues=list(set(specialityvalues))
+        specialityvalues = [str(element).replace("(", "").replace(")", "").replace("'", "").replace(",", "") for element in specialityvalues]
+
+
+
+
 
 
         #################   ENTRIES #######################
@@ -91,11 +107,15 @@ class student:
         self.LevelEntry = ttk.Combobox(self.frameleft, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.level)
         self.LevelEntry.place(x=120, y=300, width=200, height=40)
 
-        self.SpecialityEntry = ttk.Combobox(self.frameleft, values=["S1","S2","S3"],state='readonly',textvariable=self.speciality)
+        self.SpecialityEntry = ttk.Combobox(self.frameleft, values=specialityvalues,state='readonly',textvariable=self.speciality)
         self.SpecialityEntry.place(x=120, y=350, width=200, height=40)
 
         self.GroupEntry = ttk.Combobox(self.frameleft,values=["1","2","3"],state='readonly',textvariable=self.group)
         self.GroupEntry.place(x=120,y=400,width=200,height=40)
+
+
+        mydb.commit()
+        mydb.close()
 
 
 
@@ -199,7 +219,7 @@ class student:
         self.LevelEntrySelect = ttk.Combobox(self.framerightbuttom, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.levelselect)
         self.LevelEntrySelect.place(x=150, y=80, width=100, height=40)
 
-        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values=["S1","S2","S3"],state='readonly',textvariable=self.specialityselect)
+        self.SpecialityEntrySelect = ttk.Combobox(self.framerightbuttom, values=specialityvalues,state='readonly',textvariable=self.specialityselect)
         self.SpecialityEntrySelect.place(x=250, y=80, width=100, height=40)
 
         self.GroupEntrySelect = ttk.Combobox(self.framerightbuttom,values=["1","2","3"],state='readonly',textvariable=self.groupselect)
