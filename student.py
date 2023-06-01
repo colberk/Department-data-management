@@ -3,6 +3,7 @@ from tkinter import ttk
 from PIL import Image,ImageTk
 import tkinter.messagebox as mb
 import mysql.connector as mc
+import pyperclip
 
 class student:
     def __init__(self,cf):
@@ -15,7 +16,6 @@ class student:
         self.imgstudent=Label(self.studentframe,image=self.new_img2,padx=10,pady=10)
         self.imgstudent.pack()
         self.buttomstdn=Button(self.studentframe,command=self.openstudentwindow,font=('Helvetica',10,'bold'),text='Student Management',bg='#1a8488',fg='white',padx=10,pady=10)
-        
         self.buttomstdn.pack()
 
     def openstudentwindow(self):
@@ -167,7 +167,7 @@ class student:
         self.frameView=Frame(self.frameright,bg='blue')
         self.frameView.pack(fill=Y)
         self.scrollbar=Scrollbar(self.frameView,orient=VERTICAL)
-        self.table=ttk.Treeview(self.frameView,columns=("Firstname","Lastname","Regestration N°","Email","Phone Number","Level","Speciality","Group"),show='headings',height=15,yscrollcommand=self.scrollbar.set)
+        self.table=ttk.Treeview(self.frameView,columns=("Firstname","Lastname","Regestration N°","Email","Phone Number","Level","Speciality","Group"),show='headings',yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=RIGHT,fill=Y)
         self.scrollbar.config(command=self.table.yview)
         self.table.pack(fill=BOTH)
@@ -196,7 +196,7 @@ class student:
 
         #################   BUTTOM RIGHT FRAME   #######################
 
-        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom=Frame(self.frameright,height=500,pady=5,padx=5)
         self.framerightbuttom.pack(fill=X)
 
         #################   LABELS #######################
@@ -208,6 +208,9 @@ class student:
 
         self.GroupSelect = Label(self.framerightbuttom,text="Group:",fg='#4F4F4F',font=('tahoma',9))
         self.GroupSelect.place(x=350,y=20,width=100,height=40)
+
+        self.CopySelect = Label(self.framerightbuttom, text="COPY:" , fg='#4F4F4F',font=('tahoma',9))
+        self.CopySelect.place(x=200 , y=200 , width=100, height=40 )
 
 
         self.levelselect=StringVar()
@@ -227,10 +230,19 @@ class student:
 
         self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
         self.buttonselect.place(x=500,y=80,width=200,height=40)
+
+        self.CopyEmailsSelect =Button(self.framerightbuttom , command=self.copyEmails , text="Emails" ,fg='#4F4F4F', font=('tahoma', 9),width=20 )
+        self.CopyEmailsSelect.place(x=300 , y=200 , width=100, height=30 )
+
+        self.CopyNumbersSelect =Button(self.framerightbuttom , command=self.copyNumbers , text="Phone Numbers" ,fg='#4F4F4F', font=('tahoma', 9),width=20 )
+        self.CopyNumbersSelect.place(x=400 , y=200 , width=100, height=30 )
+
+        self.CopyRegNSelect =Button(self.framerightbuttom , command=self.copyRegistrationNumbers , text="Resitration N°" ,fg='#4F4F4F', font=('tahoma', 9),width=20 )
+        self.CopyRegNSelect.place(x=500 , y=200 , width=100, height=30 )
     
     
     
-    #################   BUTTON FONCtIONS #######################
+    #################   BUTTON FONCTIONS #######################
 
     ### ADD FONTION ###
 
@@ -371,7 +383,6 @@ class student:
             else:
                 sql = ("update student set firstname=%s,lastname=%s, registrationnumber=%s, email=%s, phonenumber=%s, level=%s, speciality=%s, groupe=%s where registrationnumber=%s")
                 val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get(),self.iid)
-                print(self.iid)
                 mycursor.execute(sql,val)
                 mydb.commit()
                 self.read()
@@ -391,7 +402,6 @@ class student:
             database='university'
         )
         mycursor = mydb.cursor()
-        print(self.searchstudent.get())
         if (len(self.searchstudent.get())==0 ) :
             mb.showerror('Error', 'Data missing, please, make sure to fill the information in the search bar',parent=self.master)
         else:
@@ -399,7 +409,6 @@ class student:
             mycursor.execute(sql)
             myresults = mycursor.fetchone()
             self.table.delete(*self.table.get_children())
-            #print(myresults)
             self.table.insert('', 'end', iid=myresults[0], values=myresults)
             mydb.commit()
             mydb.close()
@@ -473,7 +482,51 @@ class student:
                 mydb.commit()
             mydb.close()
 
-    
-    
-    
-    
+
+
+
+    def copyEmails(self):
+        # Get selected column index
+        column_index = 3
+
+        # Get the values of the selected column
+        column_values = [self.table.set(item, column_index) for item in self.table.get_children()]
+
+        # Concatenate column values into a single string
+        column_string = "\n".join(column_values)
+
+        # Copy column values to clipboard
+        pyperclip.copy(column_string)
+        
+        mb.showinfo('Successfully copied', 'Emails copied to clipboard',parent=self.master)
+
+
+    def copyNumbers(self):
+        # Get selected column index
+        column_index = 4
+
+        # Get the values of the selected column
+        column_values = [self.table.set(item, column_index) for item in self.table.get_children()]
+
+        # Concatenate column values into a single string
+        column_string = "\n".join(column_values)
+
+        # Copy column values to clipboard
+        pyperclip.copy(column_string)
+        
+        mb.showinfo('Successfully copied', 'Phone Numbers copied to clipboard',parent=self.master)
+
+    def copyRegistrationNumbers(self):
+        # Get selected column index
+        column_index = 2
+
+        # Get the values of the selected column
+        column_values = [self.table.set(item, column_index) for item in self.table.get_children()]
+
+        # Concatenate column values into a single string
+        column_string = "\n".join(column_values)
+
+        # Copy column values to clipboard
+        pyperclip.copy(column_string)
+        
+        mb.showinfo('Successfully copied', 'Registration numbers copied to clipboard',parent=self.master)

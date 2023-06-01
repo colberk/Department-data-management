@@ -3,6 +3,7 @@ from tkinter import ttk
 from PIL import Image,ImageTk
 import tkinter.messagebox as mb
 import mysql.connector as mc
+import pyperclip
 
 
 class staff:
@@ -167,7 +168,7 @@ class staff:
 
 
         #################   BUTTOM RIGHT FRAME   #######################
-        self.framerightbuttom=Frame(self.frameright,height=200,pady=5,padx=5)
+        self.framerightbuttom=Frame(self.frameright,height=500,pady=5,padx=5)
         self.framerightbuttom.pack(fill=X)
 
         #################   LABELS #######################
@@ -176,6 +177,9 @@ class staff:
 
         self.SecJobSelect = Label(self.framerightbuttom,text="Secondary job:",fg='#4F4F4F',font=('tahoma',9))
         self.SecJobSelect.place(x=250, y=20, width=100, height=40)
+
+        self.CopySelect = Label(self.framerightbuttom, text="COPY:" , fg='#4F4F4F',font=('tahoma',9))
+        self.CopySelect.place(x=200 , y=200 , width=100, height=40 )
 
         
 
@@ -194,6 +198,13 @@ class staff:
 
         self.buttonselect = Button(self.framerightbuttom,command=self.filter, text='Filter', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=20)
         self.buttonselect.place(x=450,y=80,width=200,height=40)
+
+        self.CopyEmailsSelect =Button(self.framerightbuttom , command=self.copyEmails , text="Emails" ,fg='#4F4F4F', font=('tahoma', 9),width=20 )
+        self.CopyEmailsSelect.place(x=300 , y=200 , width=100, height=30 )
+
+        self.CopyNumbersSelect =Button(self.framerightbuttom , command=self.copyNumbers , text="Phone Numbers" ,fg='#4F4F4F', font=('tahoma', 9),width=20 )
+        self.CopyNumbersSelect.place(x=400 , y=200 , width=100, height=30 )
+
     
     
     ############# BUTTONS FONCTIONS #################
@@ -378,3 +389,34 @@ class staff:
                 self.table.insert('','end',iid=res[0],values=res)
                 mydb.commit()
             mydb.close()
+
+    def copyEmails(self):
+        # Get selected column index
+        column_index = 4
+
+        # Get the values of the selected column
+        column_values = [self.table.set(item, column_index) for item in self.table.get_children()]
+
+        # Concatenate column values into a single string
+        column_string = "\n".join(column_values)
+
+        # Copy column values to clipboard
+        pyperclip.copy(column_string)
+        
+        mb.showinfo('Successfully copied', 'Emails copied to clipboard',parent=self.master)
+
+
+    def copyNumbers(self):
+        # Get selected column index
+        column_index = 5
+
+        # Get the values of the selected column
+        column_values = [self.table.set(item, column_index) for item in self.table.get_children()]
+
+        # Concatenate column values into a single string
+        column_string = "\n".join(column_values)
+
+        # Copy column values to clipboard
+        pyperclip.copy(column_string)
+        
+        mb.showinfo('Successfully copied', 'Phone Numbers copied to clipboard',parent=self.master)
