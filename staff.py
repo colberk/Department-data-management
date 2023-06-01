@@ -26,6 +26,7 @@ class staff:
         self.master.title('Staff Management')
         self.master.geometry("1200x600+50+50")
         self.master.iconbitmap('mortarboard.ico')
+        self.master.resizable(False, False)
 
 
         ############################   TOP FRAME   ############################
@@ -35,30 +36,33 @@ class staff:
         self.sms.pack()
 
         #############################   LEFT FRAME   #############################
-        self.frameleft = Frame(self.master, width=400)
+        self.frameleft = Frame(self.master, width=400,bg='#d9d9d8')
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ###################    LABELS   #######################
-        self.FirstName=Label(self.frameleft,text='Firstname:',fg='#4F4F4F',font=('tahoma',9))
-        self.FirstName.place(x=10,y=30,width=100,height=40)
+        self.Title=Label(self.frameleft,text='DATA MANUPILATION SECTION',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',12,'bold'))
+        self.Title.place(x=50,y=10,width=310,height=40)
+
+        self.FirstName=Label(self.frameleft,text='Firstname:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.FirstName.place(x=10,y=50,width=100,height=40)
         
-        self.LastName = Label(self.frameleft, text='Lastname:',fg='#4F4F4F',font=('tahoma',9))
-        self.LastName.place(x=10,y=80,width=100,height=40)
+        self.LastName = Label(self.frameleft, text='Lastname:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.LastName.place(x=10,y=100,width=100,height=40)
         
-        self.IDN = Label(self.frameleft, text='IDCard N°:',fg='#4F4F4F',font=('tahoma',9))
-        self.IDN.place(x=10,y=130,width=100,height=40)
+        self.IDN = Label(self.frameleft, text='IDCard N°:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.IDN.place(x=10,y=150,width=100,height=40)
         
-        self.Email = Label(self.frameleft, text='Email:',fg='#4F4F4F',font=('tahoma',9))
-        self.Email.place(x=10,y=180,width=100,height=40)
+        self.Email = Label(self.frameleft, text='Email:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.Email.place(x=10,y=200,width=100,height=40)
         
-        self.PhoneNumber = Label(self.frameleft, text='Phone:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.PhoneNumber.place(x=10, y=230, width=100, height=40)
+        self.PhoneNumber = Label(self.frameleft, text='Phone:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9 ))
+        self.PhoneNumber.place(x=10, y=250, width=100, height=40)
         
-        self.MainJob= Label(self.frameleft, text='Main Job:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.MainJob.place(x=10, y=280, width=100, height=40)
+        self.MainJob= Label(self.frameleft, text='Main Job:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9 ))
+        self.MainJob.place(x=10, y=300, width=100, height=40)
         
-        self.SecJob= Label(self.frameleft, text='Secondary Job:', fg='#4F4F4F', font=('tahoma', 9 ))
-        self.SecJob.place(x=10, y=330, width=100, height=40)
+        self.SecJob= Label(self.frameleft, text='Secondary Job:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9 ))
+        self.SecJob.place(x=10, y=350, width=100, height=40)
 
         self.firstname=StringVar()
         self.lastname = StringVar()
@@ -67,48 +71,48 @@ class staff:
         self.phonenumber=StringVar()
         self.mainjob=StringVar()
         self.secjob = StringVar()
-        self.searchstudent= StringVar()
+        self.searchstaff= StringVar()
 
         ###################    ENTRIES   #######################
         self.FirstNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.firstname)
-        self.FirstNameEntry.place(x=120,y=30,width=200,height=40)
+        self.FirstNameEntry.place(x=120,y=50,width=200,height=40)
         
         self.LastNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.lastname)
-        self.LastNameEntry.place(x=120,y=80,width=200,height=40)
+        self.LastNameEntry.place(x=120,y=100,width=200,height=40)
         
         self.IDNentry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.idn)
-        self.IDNentry.place(x=120,y=130,width=200,height=40)
+        self.IDNentry.place(x=120,y=150,width=200,height=40)
         
         self.EmailEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.email)
-        self.EmailEntry.place(x=120,y=180,width=200,height=40)
+        self.EmailEntry.place(x=120,y=200,width=200,height=40)
         
         self.PhoneEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 12,), textvariable=self.phonenumber)
-        self.PhoneEntry.place(x=120, y=230, width=200, height=40)
+        self.PhoneEntry.place(x=120, y=250, width=200, height=40)
         
         self.MainJobEntry = ttk.Combobox(self.frameleft, values=["Professor","Professor-grade1","Professor-grade2","Employee"],state='readonly',textvariable=self.mainjob)
-        self.MainJobEntry.place(x=120, y=280, width=200, height=40)
+        self.MainJobEntry.place(x=120, y=300, width=200, height=40)
         
         self.SecJobEntry = ttk.Combobox(self.frameleft, values=["None","Job1","Job2","Job3"],state='readonly',textvariable=self.secjob)
-        self.SecJobEntry.place(x=120, y=330, width=200, height=40)
+        self.SecJobEntry.place(x=120, y=350, width=200, height=40)
 
          
 
         ###################    BUTTONS   #######################
 
-        self.buttonAdd=Button(self.frameleft , command=self.add, text="ADD" , font=('tahoma',10))
-        self.buttonAdd.place(x=20,y=400,width=60,height=60)
+        self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
+        self.buttonAdd.place(x=10,y=450,width=60,height=40)
         
-        self.buttonUpdate = Button(self.frameleft , command=self.update , text="UPDATE" , font=('tahoma',10))
-        self.buttonUpdate.place(x=100, y=400,width=60,height=60)
+        self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
+        self.buttonUpdate.place(x=90, y=450,width=60,height=40)
         
-        self.buttonDelete = Button(self.frameleft , command=self.delete , text="DELETE" , font=('tahoma',10))
-        self.buttonDelete.place(x=180, y=400,width=60,height=60)
+        self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
+        self.buttonDelete.place(x=170, y=450,width=60,height=40)
         
-        self.buttonRead = Button(self.frameleft , command=self.read , text="SHOW", font=('tahoma', 10,))
-        self.buttonRead.place(x=260, y=400, width=60, height=60)
+        self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
+        self.buttonRead.place(x=250, y=450, width=60, height=40)
         
-        self.buttonReset = Button(self.frameleft , command=self.reset , text="RESET" , font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=400, width=60, height=60)
+        self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
+        self.buttonReset.place(x=330, y=450, width=60, height=40)
 
 
 
@@ -123,8 +127,8 @@ class staff:
         self.framerighttop=Frame(self.frameright,height=50,pady=5,padx=5)
 
         ###################    TOP RIGHT FRAME   #######################
-        self.searchstudententry = Entry(self.framerighttop , fg='#4F4F4F' , font=('tahoma', 12, 'bold'),width=110,textvariable=self.searchstudent)
-        self.searchstudententry.grid(row=0, column=0 , sticky='nsew' , pady=10, padx=10)
+        self.searchstaffentry = Entry(self.framerighttop , fg='#4F4F4F' , font=('tahoma', 12, 'bold'),width=110,textvariable=self.searchstaff)
+        self.searchstaffentry.grid(row=0, column=0 , sticky='nsew' , pady=10, padx=10)
         
         self.buttonsearch = Button(self.framerighttop,command=self.search, text='Search', fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=50)
         self.buttonsearch.grid(row=0, column=1, sticky='nsew', pady=10, padx=10)
@@ -280,6 +284,7 @@ class staff:
         self.PhoneEntry.delete(0,'end')
         self.MainJobEntry.set("")
         self.SecJobEntry.set("")
+        self.searchstaffentry.delete(0,'end')
 
 
     #### DELETE FONCTION  ####
@@ -335,8 +340,8 @@ class staff:
                 database='university'
             )
             mycursor = mydb.cursor()
-            print(self.searchstudent.get())
-            sql = ("select * from staff where id="+self.searchstudent.get())
+            print(self.searchstaff.get())
+            sql = ("select * from staff where id="+self.searchstaff.get())
             mycursor.execute(sql)
             myresults = mycursor.fetchone()
             self.table.delete(*self.table.get_children())

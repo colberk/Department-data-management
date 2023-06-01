@@ -23,6 +23,7 @@ class student:
         self.master.title('Student Management System')
         self.master.geometry("1200x650+50+50")
         self.master.iconbitmap('mortarboard.ico')
+        self.master.resizable(False, False)
 
         #######   TOP FRAME   #######
         self.topframe=Frame(self.master,bg='#105356',height=10)
@@ -33,32 +34,35 @@ class student:
 
 
         #######   LEFT FRAME   #######
-        self.frameleft = Frame(self.master, width=400)
+        self.frameleft = Frame(self.master, width=400,bg='#d9d9d8')
         self.frameleft.pack(side=LEFT, fill=BOTH)
         #################   LABELS #######################
-        self.FirstName=Label(self.frameleft,text='First name:',fg='#4F4F4F',font=('tahoma',9))
-        self.FirstName.place(x=10,y=30,width=100,height=40)
-        
-        self.LastName = Label(self.frameleft, text='Last Name:',fg='#4F4F4F',font=('tahoma',9))
-        self.LastName.place(x=10,y=80,width=100,height=40)
-        
-        self.RegistrationN = Label(self.frameleft, text='Regestration N°:',fg='#4F4F4F',font=('tahoma',9))
-        self.RegistrationN.place(x=10,y=130,width=100,height=40)
-        
-        self.Email = Label(self.frameleft, text='Email:',fg='#4F4F4F',font=('tahoma',9))
-        self.Email.place(x=10,y=180,width=100,height=40)
-        
-        self.PhoneNum = Label(self.frameleft,text='Phone Number:',fg='#4F4F4F',font=('tahoma',9))
-        self.PhoneNum.place(x=10,y=230,width=100,height=40)
-        
-        self.Level = Label(self.frameleft,text='Level:',fg='#4F4F4F',font=('tahoma',9))
-        self.Level.place(x=10,y=300,width=100,height=40)
+        self.Title=Label(self.frameleft,text='DATA MANUPILATION SECTION',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',12,'bold'))
+        self.Title.place(x=50,y=10,width=310,height=40)
 
-        self.Speciality = Label(self.frameleft,text='Speciality:',fg='#4F4F4F',font=('tahoma',9))
-        self.Speciality.place(x=10,y=350,width=100,height=40)
+        self.FirstName=Label(self.frameleft,text='First name:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.FirstName.place(x=10,y=50,width=100,height=40)
         
-        self.Group = Label(self.frameleft,text='Group:',fg='#4F4F4F',font=('tahoma',9))
-        self.Group.place(x=10,y=400,width=100,height=40)
+        self.LastName = Label(self.frameleft, text='Last Name:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.LastName.place(x=10,y=100,width=100,height=40)
+        
+        self.RegistrationN = Label(self.frameleft, text='Regestration N°:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.RegistrationN.place(x=10,y=150,width=100,height=40)
+        
+        self.Email = Label(self.frameleft, text='Email:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.Email.place(x=10,y=200,width=100,height=40)
+        
+        self.PhoneNum = Label(self.frameleft,text='Phone Number:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.PhoneNum.place(x=10,y=250,width=100,height=40)
+        
+        self.Level = Label(self.frameleft,text='Level:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.Level.place(x=10,y=320,width=100,height=40)
+
+        self.Speciality = Label(self.frameleft,text='Speciality:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.Speciality.place(x=10,y=370,width=100,height=40)
+        
+        self.Group = Label(self.frameleft,text='Group:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.Group.place(x=10,y=420,width=100,height=40)
         
         self.firstname = StringVar()
         self.lastname = StringVar()
@@ -90,28 +94,28 @@ class student:
         #################   ENTRIES #######################
 
         self.FirstNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.firstname)
-        self.FirstNameEntry.place(x=120,y=30,width=200,height=40)
+        self.FirstNameEntry.place(x=120,y=50,width=200,height=40)
         
         self.LastNameEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.lastname)
-        self.LastNameEntry.place(x=120,y=80,width=200,height=40)
+        self.LastNameEntry.place(x=120,y=100,width=200,height=40)
         
         self.RNentry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.registration)
-        self.RNentry.place(x=120,y=130,width=200,height=40)
+        self.RNentry.place(x=120,y=150,width=200,height=40)
         
         self.EmailEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.email)
-        self.EmailEntry.place(x=120,y=180,width=200,height=40)
+        self.EmailEntry.place(x=120,y=200,width=200,height=40)
         
         self.PhoneNumEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',12),textvariable=self.phoneNum)
-        self.PhoneNumEntry.place(x=120,y=230,width=200,height=40)
+        self.PhoneNumEntry.place(x=120,y=250,width=200,height=40)
 
         self.LevelEntry = ttk.Combobox(self.frameleft, values=["L1","L2","L3","M1","M2","Phd"],state='readonly',textvariable=self.level)
-        self.LevelEntry.place(x=120, y=300, width=200, height=40)
+        self.LevelEntry.place(x=120, y=320, width=200, height=40)
 
         self.SpecialityEntry = ttk.Combobox(self.frameleft, values=specialityvalues,state='readonly',textvariable=self.speciality)
-        self.SpecialityEntry.place(x=120, y=350, width=200, height=40)
+        self.SpecialityEntry.place(x=120, y=370, width=200, height=40)
 
         self.GroupEntry = ttk.Combobox(self.frameleft,values=["1","2","3"],state='readonly',textvariable=self.group)
-        self.GroupEntry.place(x=120,y=400,width=200,height=40)
+        self.GroupEntry.place(x=120,y=420,width=200,height=40)
 
 
         mydb.commit()
@@ -122,19 +126,19 @@ class student:
         #################   BUTTONS #######################
 
         self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
-        self.buttonAdd.place(x=20,y=500,width=60,height=60)
+        self.buttonAdd.place(x=10,y=500,width=60,height=40)
         
         self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
-        self.buttonUpdate.place(x=100, y=500,width=60,height=60)
+        self.buttonUpdate.place(x=90, y=500,width=60,height=40)
         
         self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
-        self.buttonDelete.place(x=180, y=500,width=60,height=60)
+        self.buttonDelete.place(x=170, y=500,width=60,height=40)
         
         self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=500, width=60, height=60)
+        self.buttonRead.place(x=250, y=500, width=60, height=40)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=500, width=60, height=60)
+        self.buttonReset.place(x=330, y=500, width=60, height=40)
 
 
         #################   RIGHT FRAME #######################
@@ -144,10 +148,10 @@ class student:
         self.framerighttop=Frame(self.frameright,height=50,pady=5,padx=5)
 
 
-        self.searchstudent = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=10)
+        self.searchstudent = Entry(self.framerighttop, fg='#4F4F4F', font=('tahoma', 12, 'bold'),width=110)
         self.searchstudent.grid(row=0, column=0, sticky='nsew', pady=10, padx=10)
         
-        self.buttonsearch = Button(self.framerighttop, text='Search', fg='#4F4F4F',command=self.search, font=('tahoma', 12, 'bold'),width=20)
+        self.buttonsearch = Button(self.framerighttop, text='Search', fg='#4F4F4F',command=self.search, font=('tahoma', 12, 'bold'),width=50)
         self.buttonsearch.grid(row=0, column=1, sticky='nsew', pady=10, padx=10)
         
 
@@ -333,6 +337,7 @@ class student:
         self.SpecialityEntrySelect.set("")
         self.LevelEntrySelect.set("")
         self.GroupEntrySelect.set("")
+        self.searchstudent.delete(0,'end')
 
         
 

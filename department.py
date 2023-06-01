@@ -25,6 +25,7 @@ class Department:
         self.master.title('Specialties And Groups')
         self.master.geometry("1200x500+50+50")
         self.master.iconbitmap('mortarboard.ico')
+        self.master.resizable(False, False)
 
         #######   TOP FRAME   #######
         self.topframe=Frame(self.master,bg='#105356',height=10)
@@ -35,17 +36,20 @@ class Department:
 
 
         #######   LEFT FRAME   #######
-        self.frameleft = Frame(self.master, width=400)
+        self.frameleft = Frame(self.master, width=400,bg='#d9d9d8')
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         #################   LABELS #######################
-        self.SpecialityName=Label(self.frameleft,text='Speciality\'s Name:',fg='#4F4F4F',font=('tahoma',9))
+        self.Title=Label(self.frameleft,text='DATA MANUPILATION SECTION',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',12,'bold'))
+        self.Title.place(x=50,y=10,width=310,height=40)
+
+        self.SpecialityName=Label(self.frameleft,text='Speciality\'s Name:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
         self.SpecialityName.place(x=10,y=80,width=100,height=40)
         
-        self.Level = Label(self.frameleft, text='Level:',fg='#4F4F4F',font=('tahoma',9))
+        self.Level = Label(self.frameleft, text='Level:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
         self.Level.place(x=10,y=130,width=100,height=40)
         
-        self.NumberGroup = Label(self.frameleft, text='Number of groups:',fg='#4F4F4F',font=('tahoma',9))
+        self.NumberGroup = Label(self.frameleft, text='Number of groups:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
         self.NumberGroup.place(x=10,y=180,width=100,height=40)
         
         
@@ -72,19 +76,19 @@ class Department:
         #################   BUTTONS #######################
 
         self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
-        self.buttonAdd.place(x=20,y=350,width=60,height=60)
+        self.buttonAdd.place(x=10,y=380,width=60,height=40)
         
         self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
-        self.buttonUpdate.place(x=100, y=350,width=60,height=60)
+        self.buttonUpdate.place(x=90, y=380,width=60,height=40)
         
         self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
-        self.buttonDelete.place(x=180, y=350,width=60,height=60)
+        self.buttonDelete.place(x=170, y=380,width=60,height=40)
         
         self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=350, width=60, height=60)
+        self.buttonRead.place(x=250, y=380, width=60, height=40)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=350, width=60, height=60)
+        self.buttonReset.place(x=330, y=380, width=60, height=40)
 
 
         #################   RIGHT FRAME #######################
@@ -125,10 +129,10 @@ class Department:
         self.table.heading("Level", text="Level")
         self.table.heading("Number Of Groups", text="Number Of Groups")
 
-        self.table.column("ID", anchor=W,width= 20)
-        self.table.column("Speciality Name",anchor=W,width= 200)
-        self.table.column("Level",anchor=W,width=200)
-        self.table.column("Number Of Groups",anchor=W,width= 200)
+        self.table.column("ID", anchor=W,width= 50)
+        self.table.column("Speciality Name",anchor=W,width= 220)
+        self.table.column("Level",anchor=CENTER,width=220)
+        self.table.column("Number Of Groups",anchor=CENTER,width= 220)
 
         self.read()
         self.table.bind("<ButtonRelease>",self.show)
@@ -254,6 +258,7 @@ class Department:
         self.NumberGroupsEntry.set("")
         self.SpecialityEntrySelect.set("")
         self.LevelEntrySelect.set("")
+        self.SearchSpeciality.delete(0,'end')
 
 
     ### DELETE FONTION ###

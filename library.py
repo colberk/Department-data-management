@@ -29,6 +29,7 @@ class library:
         self.master.title('Library Management')
         self.master.geometry("1200x600+50+50")
         self.master.iconbitmap('mortarboard.ico')
+        self.master.resizable(False, False)
 
 
         ############################   TOP FRAME   ############################
@@ -38,27 +39,30 @@ class library:
         self.sms.pack()
         
         ##############################     LEFT FRAME   ##############################
-        self.frameleft = Frame(self.master, width=400)
+        self.frameleft = Frame(self.master, width=400,bg='#d9d9d8')
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ###################   LABELS   #####################
-        self.RegistrationN=Label(self.frameleft,text='Registration N°:',fg='#4F4F4F',font=('tahoma',9))
-        self.RegistrationN.place(x=15,y=30,width=120,height=40)
-        
-        self.PhoneNumber = Label(self.frameleft, text='Phone Number:', fg='#4F4F4F', font=('tahoma', 9))
-        self.PhoneNumber.place(x=10, y=80, width=120, height=40)
-        
-        self.BookID = Label(self.frameleft, text='Book Name:', fg='#4F4F4F', font=('tahoma', 9))
-        self.BookID.place(x=10, y=130, width=120, height=40)
+        self.Title=Label(self.frameleft,text='DATA MANUPILATION SECTION',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',12,'bold'))
+        self.Title.place(x=50,y=10,width=310,height=40)
 
-        self.BookName = Label(self.frameleft, text='Book ID:', fg='#4F4F4F', font=('tahoma', 9))
-        self.BookName.place(x=10, y=180, width=120, height=40)
+        self.RegistrationN=Label(self.frameleft,text='Registration N°:',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',9))
+        self.RegistrationN.place(x=15,y=50,width=120,height=40)
         
-        self.DeliveryDate = Label(self.frameleft, text='Delivery Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.DeliveryDate.place(x=15, y=260, width=120, height=40)
+        self.PhoneNumber = Label(self.frameleft, text='Phone Number:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.PhoneNumber.place(x=10, y=100, width=120, height=40)
         
-        self.ReturnDate = Label(self.frameleft, text='Return Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ReturnDate.place(x=15, y=310, width=120, height=40)
+        self.BookID = Label(self.frameleft, text='Book Name:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.BookID.place(x=10, y=150, width=120, height=40)
+
+        self.BookName = Label(self.frameleft, text='Book ID:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.BookName.place(x=10, y=200, width=120, height=40)
+        
+        self.DeliveryDate = Label(self.frameleft, text='Delivery Date:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.DeliveryDate.place(x=15, y=280, width=120, height=40)
+        
+        self.ReturnDate = Label(self.frameleft, text='Return Date:', fg='#4F4F4F', bg='#d9d9d8',font=('tahoma', 9))
+        self.ReturnDate.place(x=15, y=330, width=120, height=40)
         
         self.registrationN=StringVar()
         self.phonenumber = StringVar()
@@ -69,39 +73,39 @@ class library:
 
         ###################   ENTRIES   #####################
         self.RegistrationNEntry = Entry(self.frameleft,fg='#4F4F4F',font=('tahoma',9),textvariable=self.registrationN)
-        self.RegistrationNEntry.place(x=170,y=30,width=200,height=40)
+        self.RegistrationNEntry.place(x=170,y=50,width=200,height=40)
         
         self.PhoneNumberEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.phonenumber)
-        self.PhoneNumberEntry.place(x=170, y=80, width=200, height=40)
+        self.PhoneNumberEntry.place(x=170, y=100, width=200, height=40)
         
         self.BookNameEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.bookname)
-        self.BookNameEntry.place(x=170, y=130, width=200, height=40)
+        self.BookNameEntry.place(x=170, y=150, width=200, height=40)
 
         self.BookIDEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.bookid)
-        self.BookIDEntry.place(x=170, y=180, width=200, height=40)
+        self.BookIDEntry.place(x=170, y=200, width=200, height=40)
         
         self.DeliveryDateEntry=DateEntry(self.frameleft ,textvariable=self.deliverydate, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
-        self.DeliveryDateEntry.place(x=170, y=260,width=200,height=40)
+        self.DeliveryDateEntry.place(x=170, y=280,width=200,height=40)
         
         self.ReturnDateEntry = DateEntry(self.frameleft ,textvariable=self.returndate, date_pattern="yyyy-mm-dd")
-        self.ReturnDateEntry.place(x=170, y=310, width=200, height=40)
+        self.ReturnDateEntry.place(x=170, y=330, width=200, height=40)
 
 
         ###################   BUTTONS   #####################
-        self.buttonAdd=Button(self.frameleft,command=self.add, text="ADD", font=('tahoma',10))
-        self.buttonAdd.place(x=20,y=450,width=60,height=60)
+        self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
+        self.buttonAdd.place(x=10,y=430,width=60,height=40)
         
-        self.buttonUpdate = Button(self.frameleft,command=self.update, text="UPDATE",font=('tahoma',10))
-        self.buttonUpdate.place(x=100, y=450,width=60,height=60)
+        self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
+        self.buttonUpdate.place(x=90, y=430,width=60,height=40)
         
-        self.buttonDelete = Button(self.frameleft,command=self.delete, text="DELETE",font=('tahoma',10))
-        self.buttonDelete.place(x=180, y=450,width=60,height=60)
+        self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
+        self.buttonDelete.place(x=170, y=430,width=60,height=40)
         
-        self.buttonRead = Button(self.frameleft,command=self.read,  text="SHOW", font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=450, width=60, height=60)
+        self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
+        self.buttonRead.place(x=250, y=430, width=60, height=40)
         
-        self.buttonReset = Button(self.frameleft,command=self.reset, text="RESET", font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=450, width=60, height=60)
+        self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
+        self.buttonReset.place(x=330, y=430, width=60, height=40)
 
 
 
@@ -268,6 +272,7 @@ class library:
         self.ReturnDateEntry.delete(0,END)
         self.ReturnSelect.delete(0,END)
         self.DeliverySelect.delete(0,END)
+        self.SeachBook.delete(0,'end')
 
     ###### DELETE FONTION ######
     def delete(self):

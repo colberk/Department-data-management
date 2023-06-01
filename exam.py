@@ -28,6 +28,7 @@ class exam:
         self.master.title('Exam Management')
         self.master.geometry("1200x650+50+50")
         self.master.iconbitmap('mortarboard.ico')
+        self.master.resizable(False, False)
 
 
         ############################   TOP FRAME   ############################
@@ -37,36 +38,39 @@ class exam:
         self.sms.pack()
     
         ######################     LEFT FRAME     #######################
-        self.frameleft = Frame(self.master, width=400)
+        self.frameleft = Frame(self.master, width=400,bg='#d9d9d8')
         self.frameleft.pack(side=LEFT, fill=BOTH)
 
         ####################   LABELS    ######################
-        self.SpecialityLabel = Label(self.frameleft, text='Speciality:', fg='#4F4F4F', font=('tahoma', 9))
-        self.SpecialityLabel.place(x=15, y=30, width=120, height=40)
+        self.Title=Label(self.frameleft,text='DATA MANUPILATION SECTION',fg='#4F4F4F',bg='#d9d9d8',font=('tahoma',12,'bold'))
+        self.Title.place(x=50,y=10,width=310,height=40)
 
-        self.LevelLabel = Label(self.frameleft, text='Level:', fg='#4F4F4F', font=('tahoma', 9))
-        self.LevelLabel.place(x=15, y=80, width=120, height=40)
+        self.SpecialityLabel = Label(self.frameleft, text='Speciality:', fg='#4F4F4F', bg='#d9d9d8',font=('tahoma', 9))
+        self.SpecialityLabel.place(x=15, y=50, width=120, height=40)
 
-        self.GroupLabel = Label(self.frameleft, text='Group:', fg='#4F4F4F', font=('tahoma', 9))
-        self.GroupLabel.place(x=15, y=130, width=120, height=40)
-        
-        self.ClassroomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ClassroomLabel.place(x=10, y=180, width=120, height=40)
+        self.LevelLabel = Label(self.frameleft, text='Level:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.LevelLabel.place(x=15, y=100, width=120, height=40)
 
-        self.ModuleLabel = Label(self.frameleft, text='Module:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ModuleLabel.place(x=10, y=230, width=120, height=40)
+        self.GroupLabel = Label(self.frameleft, text='Group:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.GroupLabel.place(x=15, y=150, width=120, height=40)
         
-        self.ProfLabel = Label(self.frameleft, text='Teachers(guards):', fg='#4F4F4F', font=('tahoma', 9))
-        self.ProfLabel.place(x=10, y=280, width=120, height=40)
+        self.ClassroomLabel = Label(self.frameleft, text='Classroom:', fg='#4F4F4F', bg='#d9d9d8',font=('tahoma', 9))
+        self.ClassroomLabel.place(x=10, y=200, width=120, height=40)
 
-        self.ResProfLabel = Label(self.frameleft, text='Responsible professor:', fg='#4F4F4F', font=('tahoma', 9))
-        self.ResProfLabel.place(x=10, y=330, width=120, height=40)
+        self.ModuleLabel = Label(self.frameleft, text='Module:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.ModuleLabel.place(x=10, y=250, width=120, height=40)
         
-        self.DateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F', font=('tahoma', 9))
-        self.DateLabel.place(x=15, y=380, width=120, height=40)
+        self.ProfLabel = Label(self.frameleft, text='Teachers(guards):', fg='#4F4F4F', bg='#d9d9d8',font=('tahoma', 9))
+        self.ProfLabel.place(x=10, y=300, width=120, height=40)
+
+        self.ResProfLabel = Label(self.frameleft, text='Responsible professor:', fg='#4F4F4F', bg='#d9d9d8',font=('tahoma', 9))
+        self.ResProfLabel.place(x=10, y=350, width=120, height=40)
         
-        self.TimeLabel = Label(self.frameleft, text='Time:', fg='#4F4F4F', font=('tahoma', 9))
-        self.TimeLabel.place(x=15, y=430, width=120, height=40)
+        self.DateLabel = Label(self.frameleft, text='Date:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.DateLabel.place(x=15, y=400, width=120, height=40)
+        
+        self.TimeLabel = Label(self.frameleft, text='Time:', fg='#4F4F4F',bg='#d9d9d8', font=('tahoma', 9))
+        self.TimeLabel.place(x=15, y=450, width=120, height=40)
 
 
         self.speciality = StringVar()
@@ -91,6 +95,7 @@ class exam:
         mycursor.execute(sql)
         specialityvalues=mycursor.fetchall()
         specialityvalues=list(set(specialityvalues))
+        specialityvalues = [str(element).replace("(", "").replace(")", "").replace("'", "").replace(",", "") for element in specialityvalues]
 
         mycursor1=mydb.cursor()
         sql1="SELECT CONCAT(firstname,' ', lastname) FROM staff where job = 'Professor' OR job= 'Professor-grade1' OR  job='Professor-grade2'"
@@ -99,37 +104,38 @@ class exam:
         staffvalues=list(set(staffvalues))
         staffvalues = [str(element).replace("(", "").replace(")", "").replace("'", "").replace(",", "") for element in staffvalues]
         
+        
 
 
 
         ####################   ENTRIES    ######################
         self.SpecialityEntry = ttk.Combobox(self.frameleft, values=specialityvalues,state='readonly', textvariable=self.speciality)
-        self.SpecialityEntry.place(x=170, y=30, width=200, height=40)
+        self.SpecialityEntry.place(x=170, y=50, width=200, height=40)
 
         self.LevelEntry = ttk.Combobox(self.frameleft, values=["L1","L2","L3","M1","M2","Phd"],state='readonly', textvariable=self.level)
-        self.LevelEntry.place(x=170, y=80, width=200, height=40)
+        self.LevelEntry.place(x=170, y=100, width=200, height=40)
 
         self.GroupEntry = ttk.Combobox(self.frameleft,values=["1","2","3"],state='readonly', textvariable=self.group)
-        self.GroupEntry.place(x=170, y=130, width=200, height=40)
+        self.GroupEntry.place(x=170, y=150, width=200, height=40)
         
         self.ClassroomEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.classroom)
-        self.ClassroomEntry.place(x=170, y=180, width=200, height=40)
+        self.ClassroomEntry.place(x=170, y=200, width=200, height=40)
 
         self.ModuleEntry = Entry(self.frameleft, fg='#4F4F4F', font=('tahoma', 9), textvariable=self.module)
-        self.ModuleEntry.place(x=170, y=230, width=200, height=40)
+        self.ModuleEntry.place(x=170, y=250, width=200, height=40)
         
         self.ProfEntry = ttk.Combobox(self.frameleft, values=staffvalues,state='readonly', textvariable=self.prof)
-        self.ProfEntry.place(x=170, y=280, width=200, height=40)
+        self.ProfEntry.place(x=170, y=300, width=200, height=40)
 
         self.ResProfEntry = ttk.Combobox(self.frameleft, values=staffvalues,state='readonly', textvariable=self.resposibleprof)
-        self.ResProfEntry.place(x=170, y=330, width=200, height=40)
+        self.ResProfEntry.place(x=170, y=350, width=200, height=40)
         
         self.DateEntry = DateEntry(self.frameleft ,textvariable=self.date, date_pattern="yyyy-mm-dd",mindate=datetime.date.today())
-        self.DateEntry.place(x=170, y=380,width=200,height=40)
+        self.DateEntry.place(x=170, y=400,width=200,height=40)
         
         self.TimeEntry = ttk.Combobox(self.frameleft, values=["", "8:00", "9:00", "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"],
                                       state='readonly', textvariable=self.time)
-        self.TimeEntry.place(x=170, y=430, width=200,height=30)
+        self.TimeEntry.place(x=170, y=450, width=200,height=30)
 
 
         mydb.commit()
@@ -138,20 +144,20 @@ class exam:
 
 
         ####################   BUTTONS    ######################
-        self.buttonAdd = Button(self.frameleft, text="ADD",command=self.add,  font=('tahoma', 10))
-        self.buttonAdd.place(x=20, y=500, width=60, height=60)
+        self.buttonAdd=Button(self.frameleft,text="ADD",command=self.add,font=('tahoma',10))
+        self.buttonAdd.place(x=10,y=500,width=60,height=40)
         
-        self.buttonUpdate = Button(self.frameleft,  text="UPDATE",command=self.update, font=('tahoma', 10))
-        self.buttonUpdate.place(x=100, y=500, width=60, height=60)
+        self.buttonUpdate = Button(self.frameleft, text="UPDATE",command=self.update,font=('tahoma',10))
+        self.buttonUpdate.place(x=90, y=500,width=60,height=40)
         
-        self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete, font=('tahoma', 10))
-        self.buttonDelete.place(x=180, y=500, width=60, height=60)
+        self.buttonDelete = Button(self.frameleft, text="DELETE",command=self.delete,font=('tahoma',10))
+        self.buttonDelete.place(x=170, y=500,width=60,height=40)
         
-        self.buttonRead = Button(self.frameleft, text="SHOW",command=self.read, font=('tahoma', 10))
-        self.buttonRead.place(x=260, y=500, width=60, height=60)
+        self.buttonRead = Button(self.frameleft,  text="SHOW",command=self.read, font=('tahoma', 10))
+        self.buttonRead.place(x=250, y=500, width=60, height=40)
         
         self.buttonReset = Button(self.frameleft, text="RESET",command=self.reset, font=('tahoma', 10))
-        self.buttonReset.place(x=340, y=500, width=60, height=60)
+        self.buttonReset.place(x=330, y=500, width=60, height=40)
 
 
 
@@ -283,6 +289,7 @@ class exam:
         self.ModuleEntry.delete(0, 'end')
         self.DateEntry.delete(0,END)
         self.TimeEntry.set("")
+        self.SearchExam.delete(0,'end')
 
     def delete(self):
         try:

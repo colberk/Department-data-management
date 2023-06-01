@@ -62,7 +62,7 @@ class main: #Class university is the main window of the application after loging
 class Login:
     def __init__(self, window):
         self.master = window
-        self.master.title("Login Window")
+        self.master.title("Department Data Management - Login")
         self.master.geometry("450x400+450+150")
         
         self.img6 = Image.open('login.png')
