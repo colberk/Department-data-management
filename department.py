@@ -190,7 +190,7 @@ class Department:
     ### ADD FONTION ###
 
     def add(self):
-        try:
+        #try:
             mydb=mc.connect(
                 host='localhost',
                 user='root',
@@ -200,8 +200,13 @@ class Department:
             mycursor=mydb.cursor()
             sql="insert into speciality(specialityname,level,numberofgroups) values (%s,%s,%s)"
 
+            counts = self.countspeciality()
+
             if (len(self.specialityname.get())==0 or len(self.level.get())==0 or len(self.numbergroup.get())==0) :
                 mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
+            
+            elif(counts!=0):
+                mb.showerror('Error', 'The Speciality and level that you entred already exist in the database.',parent=self.master)
 
             else:
                 val=(self.specialityname.get(),self.level.get(),self.numbergroup.get())
@@ -212,8 +217,8 @@ class Department:
                 self.reset()
             
                 mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
-        except:
-                mb.showerror('Login Failed','Connection failed, please check your server connection')
+            """except:
+                mb.showerror('Login Failed','Connection failed, please check your server connection')"""
             
 
 
@@ -365,6 +370,35 @@ class Department:
                 self.table.insert('','end',iid=res[0],values=res)
                 mydb.commit()
             mydb.close()
+
+    def countspeciality(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = "SELECT COUNT(id) FROM speciality WHERE specialityname=%s AND level=%s" 
+        val=(self.specialityname.get(),self.level.get())
+        cursor.execute(query,val)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+
+    
 
     
     

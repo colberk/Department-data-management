@@ -251,7 +251,7 @@ class student:
     ### ADD FONTION ###
 
     def add(self):
-        try:
+        #try:
             mydb=mc.connect(
                 host='localhost',
                 user='root',
@@ -260,6 +260,10 @@ class student:
             )
             mycursor=mydb.cursor()
             sql="insert into student(firstname,lastname,registrationnumber,email,phonenumber,level,speciality,groupe) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+            count = self.countgroup()
+            countr=self.countRegNum()
+            countp=self.countphone()
+            
             if (len(self.firstname.get())==0 
                 or len(self.lastname.get())==0 
                 or len(self.registration.get())==0 
@@ -270,6 +274,13 @@ class student:
                 or len(self.group.get())==0 ) :
                 mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent=self.master)
 
+            elif(countr!=0):
+                mb.showerror('Error', 'This registration number is included in the database already.',parent=self.master)
+            elif(count<int(self.group.get())):
+                mb.showerror('Error', 'Group does not exist, please, make sure to select an available group.',parent=self.master)
+            elif(countp!=0):
+                mb.showerror('Error', 'This phone number is used already.',parent=self.master)
+
             else:
                 val=(self.firstname.get(),self.lastname.get(),self.registration.get(),self.email.get(),self.phoneNum.get(),self.level.get(),self.speciality.get(),self.group.get())
                 mycursor.execute(sql,val)
@@ -279,9 +290,9 @@ class student:
                 self.reset()
             
                 mb.showinfo('Successfully added', 'Data inserted Successfully',parent=self.master)
-        except:
+            """except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
-            self.master.destroy()
+            self.master.destroy()"""
             
 
 
@@ -535,3 +546,83 @@ class student:
         pyperclip.copy(column_string)
         
         mb.showinfo('Successfully copied', 'Registration numbers copied to clipboard',parent=self.master)
+
+    def countgroup(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = "SELECT numberofgroups FROM speciality WHERE specialityname=%s AND level=%s" 
+        val=(self.speciality.get(),self.level.get())
+        cursor.execute(query,val)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+    def countphone(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = ("SELECT COUNT(registrationnumber) FROM student WHERE phonenumber="+self.phoneNum.get()) 
+        cursor.execute(query)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+    
+    def countRegNum(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = ("SELECT COUNT(registrationnumber) FROM student WHERE registrationnumber="+self.registration.get()) 
+        cursor.execute(query)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+
+    

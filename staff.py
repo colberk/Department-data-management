@@ -425,3 +425,56 @@ class staff:
         pyperclip.copy(column_string)
         
         mb.showinfo('Successfully copied', 'Phone Numbers copied to clipboard',parent=self.master)
+
+
+    def countphone(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = ("SELECT COUNT(id) FROM staff WHERE phonenumber="+self.phoneNum.get()) 
+        cursor.execute(query)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+    
+    def countIDcard(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = ("SELECT COUNT(id) FROM staff WHERE IDcardnumber="+self.idn.get()) 
+        cursor.execute(query)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()

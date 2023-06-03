@@ -220,7 +220,7 @@ class exam:
         self.reset()
 
     def add(self):
-        try:
+        #try:
             mydb = mc.connect(
                 host='localhost',
                 user='root',
@@ -228,9 +228,17 @@ class exam:
                 database='university'
             )
             mycursor = mydb.cursor()
+            countp = self.countprof()
+            countc = self.countclass()
+            
+
             sql = "insert into exam(speciality,level,groupex,classroom,module,professor,responsibleprof,date,time) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             if (len(self.speciality.get())==0 or len(self.level.get()) == 0 or len(self.group.get()) == 0 or len(self.classroom.get()) == 0 or len(self.module.get()) == 0 or len(self.prof.get()) == 0 or len(self.resposibleprof.get()) == 0 or len(self.date.get()) == 0 or len(self.time.get()) == 0):
                 mb.showerror('Error', 'Data missing, please, make sure to fill all the information needed.',parent = self.master)
+            elif(countp!=0):
+                mb.showerror('Error', 'Teacher is not availble at that time.',parent = self.master)
+            elif(countc!=0):
+                mb.showerror('Error', 'Classroom is ocupied at that time.',parent = self.master)
             else:
                 val = (self.speciality.get(),self.level.get(),self.group.get(), self.classroom.get(), self.module.get(), self.prof.get(), self.resposibleprof.get(),self.date.get(),self.time.get())
                 mycursor.execute(sql,val)
@@ -239,10 +247,68 @@ class exam:
                 mb.showinfo('Successfully added', 'Data inserted Successfully', parent=self.master)
                 self.reset()
                 self.read()
-        except:
+            """except:
             mb.showerror('Login Failed','Connection failed, please check your server connection')
-            self.master.destroy()
+            self.master.destroy()"""
         
+    
+    def countprof(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = "SELECT COUNT(id) FROM exam WHERE professor=%s AND date=%s AND time=%s"  # Replace 'column_name' and 'table_name' with your column and table names
+        val=(self.prof.get(),self.date.get(),self.time.get())
+        cursor.execute(query,val)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+
+
+    def countclass(self):
+        mydb = mc.connect(
+                host='localhost',
+                user='root',
+                password='',
+                database='university'
+            )
+
+        cursor = mydb.cursor()
+
+        query = "SELECT COUNT(id) FROM exam WHERE classroom=%s AND date=%s AND time=%s" 
+        val=(self.classroom.get(),self.date.get(),self.time.get())
+        cursor.execute(query,val)
+
+        try:
+            result = cursor.fetchone()
+            if result:
+                count = result[0]
+                return count
+            else:
+                return 0
+        except Exception:
+            return 0
+        finally:
+            cursor.close()
+            mydb.close()
+
+
+
 
     def read(self):
         try:
@@ -280,12 +346,12 @@ class exam:
         self.time.set(val[9])
 
     def reset(self):
-        self.SpecialityEntry.delete(0, 'end')
-        self.LevelEntry.delete(0, 'end')
-        self.GroupEntry.delete(0, 'end')
+        self.SpecialityEntry.set("")
+        self.LevelEntry.set("")
+        self.GroupEntry.set("")
         self.ClassroomEntry.delete(0, 'end')
-        self.ProfEntry.delete(0, 'end')
-        self.ResProfEntry.delete(0, 'end')
+        self.ProfEntry.set("")
+        self.ResProfEntry.set("")
         self.ModuleEntry.delete(0, 'end')
         self.DateEntry.delete(0,END)
         self.TimeEntry.set("")
